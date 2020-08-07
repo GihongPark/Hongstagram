@@ -1,6 +1,9 @@
 const express = require('express');
 const dotenv = require('dotenv');
 
+const userRouter = require('./routes/user');
+const postRouter = require('./routes/post');
+const postsRouter = require('./routes/posts');
 const db = require('./models');
 
 dotenv.config();
@@ -13,9 +16,14 @@ db.sequelize.sync()
   })
   .catch(console.error);
 
+// 라우터
 app.get('/', (req, res) => {
   res.send('hello express');
 });
+
+app.use('/user', userRouter);
+app.use('/post', postRouter);
+app.use('/posts', postsRouter);
 
 app.listen(3065, () => {
   console.log('서버 실행 중!');
