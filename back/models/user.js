@@ -27,7 +27,8 @@ module.exports = class User extends Model {
       },
       visibility: {
         type: DataTypes.BOOLEAN,
-        allowNull: false
+        allowNull: false,
+        defaultValue: true,
       },
     }, {
       modelName: 'User',
@@ -45,6 +46,6 @@ module.exports = class User extends Model {
     db.User.belongsToMany(db.Post, { through: 'Bookmark', as: 'Bookmarked' });
     db.User.belongsToMany(db.Post, { through: 'PostUserTag' });
     db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followers', foreignKey: 'FollowId' });
-    db.User.belongsToMany(db.User, { through: 'Follow', as: 'FOLLOWs', foreignKey: 'FollowerId' });
+    db.User.belongsToMany(db.User, { through: 'Follow', as: 'Follows', foreignKey: 'FollowerId' });
   }
 }
