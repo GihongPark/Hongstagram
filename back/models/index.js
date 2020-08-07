@@ -1,6 +1,9 @@
 const Sequelize = require('sequelize');
-const post = require('./post');
 const user = require('./user');
+const post = require('./post');
+const comment = require('./comment');
+const image = require('./image');
+const hashtag = require('./hashtag');
 
 // 환경변수를 env에 담는다(기본값: 'development')
 const env = process.env.NODE_ENV || 'development';
@@ -11,8 +14,11 @@ const db = {};
 // sequelize가 node와 mysql을 연결해줌
 const sequelize = new Sequelize(config.database, config.username, config.password, config);
 
-db.Post = post;
 db.User = user;
+db.Post = post;
+db.Comment = comment;
+db.Image = image;
+db.Hashtag = hashtag;
 
 Object.keys(db).forEach(modelName => {
   db[modelName].init(sequelize);

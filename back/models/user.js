@@ -21,6 +21,10 @@ module.exports = class User extends Model {
         type: DataTypes.STRING(30),
         allowNull: true,
       },
+      src: {
+        type: DataTypes.STRING(200),
+        allowNull: true,
+      },
       visibility: {
         type: DataTypes.BOOLEAN,
         allowNull: false
@@ -36,7 +40,7 @@ module.exports = class User extends Model {
   static associate(db) {
     db.User.hasMany(db.Post);
     db.User.hasMany(db.Comment);
-    db.Post.belongsTo(db.Image);
+    // db.Post.belongsTo(db.Image);
     db.User.belongsToMany(db.Post, { through: 'Like', as: 'Liked' });
     db.User.belongsToMany(db.Post, { through: 'Bookmark', as: 'Bookmarked' });
     db.User.belongsToMany(db.Post, { through: 'PostUserTag' });
