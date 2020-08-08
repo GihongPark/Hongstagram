@@ -4,11 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import Head from 'next/head';
 import Link from 'next/link';
 import Router from 'next/router';
+import { END } from 'redux-saga';
+import axios from 'axios';
 
-import { SIGN_UP_REQUEST } from '../reducers/user';
+import { SIGN_UP_REQUEST, LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import useInput from '../hooks/useInput';
 import AppLayout from '../components/AppLayout';
 import { Layout, Box, Logo, FormWrapper, InputWrapper, ButtonWrapper, Terms, OtherPath } from '../style/sign';
+import wrapper from '../store/configureStore';
 
 const Signup = () => {
   const dispatch = useDispatch();
@@ -18,6 +21,12 @@ const Signup = () => {
   const [password, onChangePassword] = useInput('');
   const [username, onChangeUsername] = useInput('');
   const [name, onChangeName] = useInput('');
+
+  useEffect(() => {
+    if (me && me.id) {
+      Router.replace('/');
+    }
+  }, [me && me.id]);
 
   useEffect(() => {
     if (signUpDone) {
@@ -89,5 +98,19 @@ const Signup = () => {
     </>
   );
 };
+
+export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
+  const cookie = context.req ? context.req.headers.cookie : '';
+  axios.defaults.headers.Cookie = '';
+  if (context.req && cookie) {
+    axios.defaults.headers.Cookie = cookie;
+  }
+  context.store.dispatch({
+    type: LOAD_MY_INFO_REQUEST,
+  });
+
+  context.store.dispatch(END);
+  await context.store.sagaTask.toPromise();
+});
 
 export default Signup;

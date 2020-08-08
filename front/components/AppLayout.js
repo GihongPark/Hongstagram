@@ -9,6 +9,7 @@ import { Main, Layout, BackgroundColor } from '../style/layout';
 
 const AppLayout = ({ children }) => {
   const { me } = useSelector((state) => state.user);
+
   return (
     <>
       <BackgroundColor>
