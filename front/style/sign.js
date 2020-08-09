@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Form, Input, Button } from 'antd';
+import { Form } from 'antd';
 
 export const Layout = styled.div`
   display: flex;
@@ -21,10 +21,12 @@ export const Box = styled.div`
 `;
 export const Logo = styled.h1`
   width: 175px;
-  height: 51px;
+  height: 61px;
+  color: transparent;
   font-size: 35px;
   text-align: center;
   margin: 22px auto 12px;
+  background-image: url("/image/logo.png");
 `;
 export const FormWrapper = styled(Form)`
   display: flex;

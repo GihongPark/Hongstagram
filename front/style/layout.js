@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import FooterComponent from '../components/Footer';
 
 export const FullScreen = styled.div`
   display: flex;

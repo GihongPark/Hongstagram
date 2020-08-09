@@ -56,7 +56,7 @@ const Signup = () => {
       <AppLayout>
         <Layout>
           <Box>
-            <Logo>홍스타그램</Logo>
+            <Logo>Hongstagram</Logo>
             <FormWrapper onFinish={onSubmit}>
               <InputWrapper>
                 <label htmlFor="user-email">
