@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Row, Avatar } from 'antd';
 import {
   HomeOutlined,
@@ -23,11 +23,6 @@ const TopBar = () => {
   const { me } = useSelector((state) => state.user);
   const router = useRouter();
   const [options, setOptions] = useState([]);
-
-  useEffect(() => {
-    console.log(router.pathname);
-    console.log(router.pathname === '/');
-  }, []);
 
   const filterOption = useCallback((inputValue, option) => option.value
     .toUpperCase().indexOf(inputValue.toUpperCase()) !== -1);
@@ -89,8 +84,8 @@ const TopBar = () => {
                     ? <HeartTwoTone twoToneColor="#000" />
                     : <HeartOutlined />
                 }</a></Link></li>
-                <li><Link href="/profile"><a>
-                  <Avatar src={me.src} icon={<UserOutlined />} size="small" />
+                <li><Link href={`/profile/${me?.username}`}><a>
+                  <Avatar src={me?.src} icon={<UserOutlined />} size="small" />
                 </a></Link></li>
               </Menu>
             </Right>
