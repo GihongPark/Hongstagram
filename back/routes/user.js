@@ -66,7 +66,7 @@ router.get('/', async (req, res, next) => {  // GET /user
         data.Posts = data.Posts.length;
         data.Follows = data.Follows.length;
         data.Followers = data.Followers.length;
-        res.status(200).json(MyProfileInfo);
+        res.status(200).json(data);
       } else {
         res.status(403).send('존재하지 않는 사용자입니다');
       }
@@ -102,7 +102,7 @@ router.get('/:userId', async (req, res, next) => {  // GET /user/1
       data.Posts = data.Posts.length;
       data.Follows = data.Follows.length;
       data.Followers = data.Followers.length;
-      res.status(200).json(UserProfileInfo);
+      res.status(200).json(data);
     } else {
       res.status(403).send('존재하지 않는 사용자입니다');
     }
