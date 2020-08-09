@@ -79,10 +79,10 @@ router.get('/', async (req, res, next) => {  // GET /user
   }
 });
 // 다른 유저 프로필 정보
-router.get('/:userId', async (req, res, next) => {  // GET /user/1
+router.get('/:username', async (req, res, next) => {  // GET /user/1
   try {
     const UserProfileInfo = await User.findOne({
-      where: { id: req.params.userId },
+      where: { username: req.params.username },
       attributes: {
         exclude: ['password']
       },
@@ -101,6 +101,7 @@ router.get('/:userId', async (req, res, next) => {  // GET /user/1
       const data = UserProfileInfo.toJSON();
       data.Posts = data.Posts.length;
       data.Follows = data.Follows.length;
+      data.isFollow = data.Followers.some((id) => id === req.user.id);
       data.Followers = data.Followers.length;
       res.status(200).json(data);
     } else {
