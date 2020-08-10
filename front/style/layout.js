@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Col } from 'antd';
 
 export const FullScreen = styled.div`
   display: flex;
@@ -24,4 +25,20 @@ export const Layout = styled.section`
 `;
 export const BackgroundColor = styled(FullScreen)`
   background-color: #fafafa;
+`;
+
+export const Left = styled(Col)`
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+`;
+export const Center = styled(Col)`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+export const Right = styled(Col)`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 `;

@@ -30,6 +30,8 @@ app.use(cors({
   credentials: true,  // 쿠키 설정
 }));
 
+//  front에서 이미지 받아오기위함
+app.use('/', express.static(path.join(__dirname, 'uploads')));
 // 프론트에서 받은 데이터를 req.body안에 넣어줌
 // 라우터보다 위에있어야함
 app.use(express.json());  // json 데이터

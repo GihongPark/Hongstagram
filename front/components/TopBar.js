@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Row, Avatar } from 'antd';
+import { Row, Avatar, Button } from 'antd';
 import {
   HomeOutlined,
   HomeTwoTone,
@@ -16,13 +16,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import { Block, LayoutWrapper, Layout, Logo, AutoSearch, Menu, Left, Center, Right } from '../style/topbar';
+import { Block, LayoutWrapper, Layout, Logo, AutoSearch, Menu } from '../style/topbar';
+import { Left, Center, Right } from '../style/layout';
+import Upload from './Upload';
 
 const TopBar = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
   const router = useRouter();
+
   const [options, setOptions] = useState([]);
+  const [uploadVisible, setUploadVisible] = useState(false);
 
   const filterOption = useCallback((inputValue, option) => option.value
     .toUpperCase().indexOf(inputValue.toUpperCase()) !== -1);
@@ -40,6 +44,8 @@ const TopBar = () => {
     console.log('onSelect: ', data);
     // TODO: 해당 유저 || 태그 이동
   };
+
+  const showUpload = () => setUploadVisible(true);
 
   return (
     <nav>
@@ -68,7 +74,10 @@ const TopBar = () => {
                     ? <HomeTwoTone twoToneColor="#000" />
                     : <HomeOutlined />
                 }</a></Link></li>
-                <li><Link href="/upload"><a><UploadOutlined /></a></Link></li>
+                <li>
+                  <Button type="text" onClick={showUpload}><UploadOutlined /></Button>
+                  <Upload visible={uploadVisible} setVisible={setUploadVisible} />
+                </li>
                 <li><Link href="/direct"><a>{
                   router.pathname === '/direct'
                     ?<MessageTwoTone twoToneColor="#000" />

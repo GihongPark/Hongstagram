@@ -34,25 +34,13 @@ export const Menu = styled.ul`
     float: left;
     padding-left: 22px;
 
-    a{
+    a, button{
       color: #000;
       font-size: 21px;
+      padding: 0;
+    }
+    .ant-btn-text:hover, .ant-btn-text:focus {
+      background: transparent;
     }
   }
-`;
-
-export const Left = styled(Col)`
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-`;
-export const Center = styled(Col)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-export const Right = styled(Col)`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
 `;

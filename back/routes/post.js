@@ -23,7 +23,7 @@ const upload = multer({
     filename(req, file, done) {
       const ext = path.extname(file.originalname);  // 확장자 추출
       const basename = path.basename(file.originalname, ext);
-      done(null, basename + '_' + new Date().getTime + ext);
+      done(null, basename + '_' + new Date().getTime() + ext);
     }
   }),
   limits: { fileSize: 20 * 1024 * 1024 },  // 20mb
@@ -33,8 +33,10 @@ const upload = multer({
 router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {  // POST /post
   try {
     const hashtags = req.body.content.match(/#[^\s#]+/g);
+    const usertags = req.body.content.match(/@[^\s@]+/g);
     const post = await Post.create({
       content: req.body.content,
+      commentAllow: req.body.commentAllow,
       UserId: req.user.id,
     });
     if (hashtags) {
@@ -42,6 +44,12 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {  // POST
         where: { name: tag.slice(1).toLowerCase() },
       })));
       await post.addHashtags(result.map((v) => v[0]));
+    }
+    if (usertags) {
+      const result = await Promise.all(usertags.map((tag) => User.findAll({ // 있으면 가져오고 없으면 등록
+        where: { username: tag.slice(1) },
+      })));
+      await post.addUsertags(result.map((v) => v[0]));
     }
     if (req.body.image) {
       if (Array.isArray(req.body.image)) {  // 이미지를 여러개 올리면 image: [image1.png, image2.png]
