@@ -9,7 +9,7 @@ import axios from 'axios';
 import AppLayout from '../../components/AppLayout';
 import { LOAD_MY_INFO_REQUEST, LOAD_USER_REQUEST, LOG_OUT_REQUEST } from '../../reducers/user';
 import wrapper from '../../store/configureStore';
-import { UserInfo, ProfileImageButton, ProfileInfo } from '../../style/profile';
+import { UserInfo, ProfileImageButton, ProfileInfo } from './style';
 
 const Profile = () => {
   const dispatch = useDispatch();

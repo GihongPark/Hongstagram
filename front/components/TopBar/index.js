@@ -16,9 +16,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import { Block, LayoutWrapper, Layout, Logo, AutoSearch, Menu } from '../style/topbar';
-import { Left, Center, Right } from '../style/layout';
-import Upload from './Upload';
+import { Block, LayoutWrapper, Layout, Logo, AutoSearch, Menu } from './style';
+import { Left, Center, Right } from '../AppLayout/style';
+import Upload from '../Upload';
 
 const TopBar = () => {
   const dispatch = useDispatch();

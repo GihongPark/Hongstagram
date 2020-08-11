@@ -5,11 +5,11 @@ import { DeleteFilled } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import Slick from 'react-slick';
 
-import useInput from '../hooks/useInput';
-import { UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE, ADD_POST_REQUEST, REMOVE_IMAGE_ALL } from '../reducers/post';
-import { backUrl } from '../config/config';
-import { Global, Title, Content, ImgWrapper } from '../style/upload';
-import { Left, Center, Right } from '../style/layout';
+import useInput from '../../hooks/useInput';
+import { UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE, ADD_POST_REQUEST, REMOVE_IMAGE_ALL } from '../../reducers/post';
+import { backUrl } from '../../config/config';
+import { Global, Title, Content, ImgWrapper } from './style';
+import { Left, Center, Right } from '../AppLayout/style';
 
 const settings = {
   dots: true,
