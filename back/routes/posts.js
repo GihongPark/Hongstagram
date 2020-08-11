@@ -13,7 +13,7 @@ router.get('/', async (req, res, next) => {  // GET /posts
     }
     const posts = await Post.findAll({
       where,
-      limit: 10,
+      limit: 12,
       order: [
         ['createdAt', 'DESC'],
         [Comment, 'createdAt', 'DESC'],
@@ -52,7 +52,7 @@ router.get('/:username', async (req, res, next) => {  // GET /posts/1
       }
       const posts = await user.getPosts({
         where,
-        limit: 10,
+        limit: 12,
         order: [
           ['createdAt', 'DESC'],
           [Comment, 'createdAt', 'DESC'],

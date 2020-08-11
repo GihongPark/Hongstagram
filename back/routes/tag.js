@@ -15,7 +15,7 @@ router.get('/:username', async (req, res, next) => {  // GET /tag/1
       }
       const tag = await user.getUsertaged({
         where,
-        limit: 10,
+        limit: 12,
         order: [
           ['createdAt', 'DESC'],
           [Comment, 'createdAt', 'DESC'],
