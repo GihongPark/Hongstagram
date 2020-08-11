@@ -45,7 +45,7 @@ module.exports = class User extends Model {
     // db.Post.belongsTo(db.Image);
     db.User.belongsToMany(db.Post, { through: 'Like', as: 'Liked' });
     db.User.belongsToMany(db.Post, { through: 'Bookmark', as: 'Bookmarked' });
-    db.User.belongsToMany(db.Post, { through: 'PostUserTag' });
+    db.User.belongsToMany(db.Post, { through: 'PostUserTag', as: 'Usertaged' });
     db.User.belongsToMany(db.User, { through: 'Follow', as: 'Followers', foreignKey: 'FollowId' });
     db.User.belongsToMany(db.User, { through: 'Follow', as: 'Follows', foreignKey: 'FollowerId' });
   }
