@@ -3,6 +3,8 @@ import styled, { createGlobalStyle } from 'styled-components';
 export const Global = createGlobalStyle`
   .slick-slider {
     margin-bottom: 30px;
+    min-height: 250px;
+    border: 1px solid #d9d9d9;
   }
   .slick-prev, .slick-next {
     width: 25px;
