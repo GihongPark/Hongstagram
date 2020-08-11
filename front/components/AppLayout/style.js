@@ -17,7 +17,6 @@ export const Main = styled.main`
 `;
 export const Layout = styled.section`
   display: flex;
-  flex-flow: colum;
   justify-content: center;
   width: 100%;
   max-width: 935px;
@@ -25,6 +24,12 @@ export const Layout = styled.section`
 `;
 export const BackgroundColor = styled(FullScreen)`
   background-color: #fafafa;
+`;
+
+export const FlexColumn = styled.div`
+  display: flex;
+  flex-flow: column;
+  width: 100%;
 `;
 
 export const Left = styled(Col)`

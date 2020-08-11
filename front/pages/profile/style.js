@@ -1,6 +1,16 @@
-import styled from 'styled-components';
-import { Button } from 'antd';
+import styled, { createGlobalStyle } from 'styled-components';
 
+export const Global = createGlobalStyle`
+.ant-tabs-tab.ant-tabs-tab-active {
+  .ant-tabs-tab-btn {
+    color: #000;
+    font-weight: 600;
+  }
+}
+.ant-tabs-ink-bar {
+  background: #000;
+}
+`;
 export const UserInfo = styled.header`
   width: 100%;
   margin-bottom: 44px;
