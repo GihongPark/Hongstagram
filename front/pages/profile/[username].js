@@ -10,7 +10,7 @@ import AppLayout from '../../components/AppLayout';
 import PostList from '../../components/PostList';
 import { LOAD_MY_INFO_REQUEST, LOAD_USER_REQUEST, LOG_OUT_REQUEST } from '../../reducers/user';
 import wrapper from '../../store/configureStore';
-import { UserInfo, ProfileImageButton, ProfileInfo, Global } from './style';
+import { UserInfo, ProfileImageButton, ProfileInfo, Global, ListWrapper, SettingButton } from './style';
 import { FlexColumn } from '../../components/AppLayout/style';
 
 const { TabPane } = Tabs;
@@ -53,43 +53,85 @@ const Profile = () => {
       <FlexColumn>
         <Global />
         <UserInfo>
-          <Row>
-            <Col xs={8}>
-              <ProfileImageButton onClick={onPopupProfileImage}>
-                <Avatar src={userInfo?.src} icon={<UserOutlined />} size={150} />
-              </ProfileImageButton>
+          <div className="wrapper">
+            <Row>
+              <Col xs={8}>
+                <ProfileImageButton onClick={onPopupProfileImage}>
+                  <Row>
+                    <Col xs={24} lg={0}>
+                      <Avatar src={userInfo?.src} icon={<UserOutlined />} size={77} />
+                    </Col>
+                    <Col xs={0} lg={24}>
+                      <Avatar src={userInfo?.src} icon={<UserOutlined />} size={150} />
+                    </Col>
+                  </Row>
+                </ProfileImageButton>
+              </Col>
+              <Col xs={16}>
+                <ProfileInfo>
+                  <div>
+                    <h2>{userInfo?.username}</h2>
+                    <SettingButton>
+                      {
+                        userInfo?.id === me?.id
+                          ? (
+                            <>
+                              <Button className="lg">프로필 편집</Button>
+                              <Button type="primary" onClick={onLogOut} loading={logOutLoading}>로그아웃</Button>
+                            </>
+                          )
+                          : (
+                            <>
+                              <Button className="lg">메시지 보내기</Button>
+                              <Button type="primary">팔로우</Button>
+                            </>
+                          )
+                      }
+                    </SettingButton>
+                  </div>
+                  <Row>
+                    <Col xs={24} lg={0}>
+                      <SettingButton>
+                        {
+                          userInfo?.id === me?.id
+                            ? <Button className="xs">프로필 편집</Button>
+                            : <Button className="xs">메시지 보내기</Button>
+                        }
+                      </SettingButton>
+                    </Col>
+                    <Col xs={0} lg={24}>
+                      <ul>
+                        <li>게시물 <span>{userInfo.Posts}</span></li>
+                        <li><Button type="text">팔로워 <span>{userInfo.Followers}</span></Button></li>
+                        <li><Button type="text">팔로우 <span>{userInfo.Follows}</span></Button></li>
+                      </ul>
+                    </Col>
+                    <Col xs={0} lg={24}>
+                      <h1>{userInfo.name}</h1>
+                    </Col>
+                  </Row>
+                </ProfileInfo>
+              </Col>
+            </Row>
+          </div>
+          <ListWrapper>
+            <Col xs={8} lg={0}>
+              <div>게시물</div>
+              <strong>{userInfo.Posts}</strong>
             </Col>
-            <Col xs={16}>
-              <ProfileInfo>
-                <div>
-                  <h2>{userInfo?.username}</h2>
-                  {
-                    userInfo?.id === me?.id
-                      ? (
-                        <>
-                          <Button>프로필 편집</Button>
-                          <Button type="primary" onClick={onLogOut} loading={logOutLoading}>로그아웃</Button>
-                        </>
-                      )
-                      : (
-                        <>
-                          <Button>메시지 보내기</Button>
-                          <Button type="primary">팔로우</Button>
-                        </>
-                      )
-                  }
-                </div>
-                <ul>
-                  <li>게시물 <span>{userInfo.Posts}</span></li>
-                  <li><Button type="text">팔로워 <span>{userInfo.Followers}</span></Button></li>
-                  <li><Button type="text">팔로우 <span>{userInfo.Follows}</span></Button></li>
-                </ul>
-                <div>
-                  <h1>{userInfo.name}</h1>
-                </div>
-              </ProfileInfo>
+            <Col xs={8} lg={0}>
+              <Button type="text">
+                <div>팔로워</div>
+                <strong>{userInfo.Followers}</strong>
+              </Button>
             </Col>
-          </Row>
+            <Col xs={8} lg={0}>
+              <Button type="text">
+                <div>팔로우</div>
+                <strong>{userInfo.Follows}</strong>
+              </Button>
+            </Col>
+          </ListWrapper>
         </UserInfo>
         <div>
           <Tabs defaultActiveKey="1" tabBarGutter={52} onChange={onChangeTab} centered>

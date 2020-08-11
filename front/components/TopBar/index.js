@@ -16,8 +16,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import { Block, LayoutWrapper, Layout, Logo, AutoSearch, Menu } from './style';
-import { Left, Center, Right } from '../AppLayout/style';
+import { Block, LayoutWrapper, Layout, Logo, AutoSearch, Menu, CenterXs } from './style';
+import { Left, Right } from '../AppLayout/style';
 import Upload from '../Upload';
 
 const TopBar = () => {
@@ -58,7 +58,7 @@ const TopBar = () => {
                 <a><Logo src="/image/logo.png" alt="logo" /></a>
               </Link>
             </Left>
-            <Center xs={0} sm={8}>
+            <CenterXs xs={0} sm={8}>
               <AutoSearch
                 options={options}
                 placeholder="검색"
@@ -66,7 +66,7 @@ const TopBar = () => {
                 onSelect={onSelect}
                 onSearch={onSearch}
               />
-            </Center>
+            </CenterXs>
             <Right xs={12} sm={8}>
               <Menu>
                 <li><Link href="/"><a>{

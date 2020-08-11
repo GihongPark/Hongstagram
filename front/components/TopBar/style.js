@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { Col, AutoComplete } from 'antd';
+import { AutoComplete } from 'antd';
+import { Center } from '../AppLayout/style';
 
 export const Block = styled.div`
   width: 100%;
@@ -43,5 +44,11 @@ export const Menu = styled.ul`
     .ant-btn-text:hover, .ant-btn-text:focus {
       background: transparent;
     }
+  }
+`;
+
+export const CenterXs = styled(Center)`
+  @media (max-width: 576px) {
+    display: none;
   }
 `;

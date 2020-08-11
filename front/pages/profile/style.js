@@ -1,4 +1,5 @@
 import styled, { createGlobalStyle } from 'styled-components';
+import { Row } from 'antd';
 
 export const Global = createGlobalStyle`
 .ant-tabs-tab.ant-tabs-tab-active {
@@ -13,7 +14,9 @@ export const Global = createGlobalStyle`
 `;
 export const UserInfo = styled.header`
   width: 100%;
-  margin-bottom: 44px;
+  > div.wrapper {
+    margin-bottom: 44px;
+  }
 `;
 export const ProfileImageButton = styled.button`
   display: block;
@@ -57,13 +60,15 @@ export const ProfileInfo = styled.div`
   }
 
   ul {
+    display: flex;
+    align-items: center;
     list-style: none;
     padding: 0;
-
+    
     li {
       float: left;
       padding-right: 22px;
-
+    
       &, & > button > span {
         color: #262626;
         font-size: 16px;
@@ -72,6 +77,57 @@ export const ProfileInfo = styled.div`
           font-weight: 500;
         }
       }
+    }
+  }
+`;
+
+export const SettingButton = styled.div`
+  .ant-btn {
+    color: #262626;
+    margin-left: 20px;
+    background-color: transparent;
+
+    &-primary {
+      color: #fff;
+      background: #1890ff;
+    }
+  }
+
+  .xs {
+    margin: 0;
+    width: 90%;
+  }
+
+  .lg {
+    @media (max-width: 992px) {
+      display: none;
+    }
+  }
+`;
+
+export const ListWrapper = styled(Row)`
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+  padding: 12px 0;
+
+  @media (min-width: 992px) {
+    display: none;
+  }
+
+  > .ant-col {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+
+    &, & > button > div {
+      color: #262626;
+      font-size: 14px;
+    }
+
+    .ant-btn {
+      color: #262626;
+      margin-left: 20px;
+      background-color: transparent;
     }
   }
 `;
