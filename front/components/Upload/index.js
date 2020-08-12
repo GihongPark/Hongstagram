@@ -9,6 +9,7 @@ import useInput from '../../hooks/useInput';
 import { UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE, ADD_POST_REQUEST, REMOVE_IMAGE_ALL } from '../../reducers/post';
 import { backUrl } from '../../config/config';
 import { Global, Title, Content, ImgWrapper } from './style';
+import SlickGlobal from '../../style/slick';
 import { Left, Center, Right } from '../AppLayout/style';
 
 const settings = {
@@ -144,8 +145,14 @@ const Upload = ({ visible, setVisible }) => {
                 <Button onClick={onClickImageUpload}>이미지 업로드</Button>
               </div>
               <div>
+                <SlickGlobal />
                 <Global />
-                <Slick {...settings}>
+                <Slick
+                  infinite
+                  dots
+                  slidesToShow={1}
+                  slidesToScroll={1}
+                >
                   {
                     imagePaths.map((v, i) => (
                       <ImgWrapper key={v}>

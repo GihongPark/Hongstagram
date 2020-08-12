@@ -7,6 +7,10 @@ export const PostCardWrapper = styled.div`
     border: 0;
     background: transparent;
     cursor: pointer;
+
+    &:focus {
+      outline: 0;
+    }
   }
 `;
 
@@ -30,10 +34,6 @@ export const Card = styled.div`
     font-size: 18px;
 
     ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-
       li {
         float: left;
         margin: 0 15px;

@@ -62,8 +62,6 @@ export const ProfileInfo = styled.div`
   ul {
     display: flex;
     align-items: center;
-    list-style: none;
-    padding: 0;
     
     li {
       float: left;
