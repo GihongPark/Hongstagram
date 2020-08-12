@@ -12,7 +12,7 @@ export const LayoutWrapper = styled.div`
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 99999999;
+  z-index: 99;
 `;
 export const Layout = styled.div`
   width: 100%;

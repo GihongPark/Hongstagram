@@ -12,17 +12,17 @@ export const Global = createGlobalStyle`
   }
   .slick-next {
     right: 5px;
-    z-index: 999;
+    z-index: 99;
   }
   .slick-prev {
     left: 5px;
-    z-index: 999;
+    z-index: 99;
   }
   .slick-prev:before, .slick-next:before {
     font-size: 25px;
   }
   .slick-dots li button:before {
-    z-index:999;
+    z-index:99;
   }
 `;
 export const Title = styled.div`
