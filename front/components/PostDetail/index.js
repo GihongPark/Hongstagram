@@ -36,8 +36,7 @@ const PostDetail = ({ postId, mode }) => {
         <Header user={singlePost.User} done={loadPostDone} mode={mode} />
         <Image images={singlePost.Images} done={loadPostDone} mode={mode} />
         <Contents
-          like={singlePost.Likers.length}
-          comments={singlePost.Comments}
+          post={singlePost}
           done={loadPostDone}
           mode={mode}
         />

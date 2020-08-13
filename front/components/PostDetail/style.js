@@ -136,8 +136,41 @@ export const CommentList = styled.div`
     overflow-y: scroll;
     left: 0;
     padding: 16px 12px;
-    position: absolute;
     width: calc(100% - 8px);
+  }
+
+  li {
+    display: flex;
+    padding: 12px 16px;
+    margin-left: -12px;
+    overflow: hidden;
+    word-break: break-word;
+
+    &:first-of-type {
+      margin-top: -5px;
+    }
+
+    .del{
+      display: none;
+      margin-left: auto;
+      color: #0009;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    &:hover .del {
+      display: block;
+    }
+
+    .content {
+      margin-left: 12px;
+
+      h3 {
+        display: inline;
+        font-size: 14px;
+        font-weight: 600;
+        margin-right: 4px;
+      }
+    }
   }
 
   &.list {

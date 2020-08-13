@@ -20,6 +20,33 @@ export const initialState = {
   uploadImagesLoading: false,
   uploadImagesDone: false,
   uploadImagesError: null,
+  loadCommentLoading: false,
+  loadCommentDone: false,
+  loadCommentError: null,
+  addCommentLoading: false,
+  addCommentDone: false,
+  addCommentError: null,
+  removeCommentLoading: false,
+  removeCommentDone: false,
+  removeCommentError: null,
+  loadLikeLoading: false,
+  loadLikeDone: false,
+  loadLikeError: null,
+  addLikeLoading: false,
+  addLikeDone: false,
+  addLikeError: null,
+  removeLikeLoading: false,
+  removeLikeDone: false,
+  removeLikeError: null,
+  loadBookmarkLoading: false,
+  loadBookmarkDone: false,
+  loadBookmarkError: null,
+  addBookmarkLoading: false,
+  addBookmarkDone: false,
+  addBookmarkError: null,
+  removeBookmarkLoading: false,
+  removeBookmarkDone: false,
+  removeBookmarkError: null,
 };
 
 export const LOAD_POST_REQUEST = 'LOAD_POST_REQUEST';
@@ -49,6 +76,42 @@ export const UPLOAD_IMAGES_FAILURE = 'UPLOAD_IMAGES_FAILURE';
 export const REMOVE_POSTS = 'REMOVE_POSTS';
 export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 export const REMOVE_IMAGE_ALL = 'REMOVE_IMAGE_ALL';
+
+export const LOAD_COMMENT_REQUEST = 'LOAD_COMMENT_REQUEST';
+export const LOAD_COMMENT_SUCCESS = 'LOAD_COMMENT_SUCCESS';
+export const LOAD_COMMENT_FAILURE = 'LOAD_COMMENT_FAILURE';
+
+export const ADD_COMMENT_REQUEST = 'ADD_COMMENT_REQUEST';
+export const ADD_COMMENT_SUCCESS = 'ADD_COMMENT_SUCCESS';
+export const ADD_COMMENT_FAILURE = 'ADD_COMMENT_FAILURE';
+
+export const REMOVE_COMMENT_REQUEST = 'REMOVE_COMMENT_REQUEST';
+export const REMOVE_COMMENT_SUCCESS = 'REMOVE_COMMENT_SUCCESS';
+export const REMOVE_COMMENT_FAILURE = 'REMOVE_COMMENT_FAILURE';
+
+export const LOAD_LIKE_REQUEST = 'LOAD_LIKE_REQUEST';
+export const LOAD_LIKE_SUCCESS = 'LOAD_LIKE_SUCCESS';
+export const LOAD_LIKE_FAILURE = 'LOAD_LIKE_FAILURE';
+
+export const ADD_LIKE_REQUEST = 'ADD_LIKE_REQUEST';
+export const ADD_LIKE_SUCCESS = 'ADD_LIKE_SUCCESS';
+export const ADD_LIKE_FAILURE = 'ADD_LIKE_FAILURE';
+
+export const REMOVE_LIKE_REQUEST = 'REMOVE_LIKE_REQUEST';
+export const REMOVE_LIKE_SUCCESS = 'REMOVE_LIKE_SUCCESS';
+export const REMOVE_LIKE_FAILURE = 'REMOVE_LIKE_FAILURE';
+
+export const LOAD_BOOKMARK_REQUEST = 'LOAD_BOOKMARK_REQUEST';
+export const LOAD_BOOKMARK_SUCCESS = 'LOAD_BOOKMARK_SUCCESS';
+export const LOAD_BOOKMARK_FAILURE = 'LOAD_BOOKMARK_FAILURE';
+
+export const ADD_BOOKMARK_REQUEST = 'ADD_BOOKMARK_REQUEST';
+export const ADD_BOOKMARK_SUCCESS = 'ADD_BOOKMARK_SUCCESS';
+export const ADD_BOOKMARK_FAILURE = 'ADD_BOOKMARK_FAILURE';
+
+export const REMOVE_BOOKMARK_REQUEST = 'REMOVE_BOOKMARK_REQUEST';
+export const REMOVE_BOOKMARK_SUCCESS = 'REMOVE_BOOKMARK_SUCCESS';
+export const REMOVE_BOOKMARK_FAILURE = 'REMOVE_BOOKMARK_FAILURE';
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
@@ -127,6 +190,55 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case UPLOAD_IMAGES_FAILURE:
       draft.uploadImagesLoading = false;
       draft.uploadImagesError = action.error;
+      break;
+    case LOAD_COMMENT_REQUEST:
+      draft.loadCommentLoading = true;
+      draft.loadCommentDone = false;
+      draft.loadCommentError = null;
+      break;
+    case LOAD_COMMENT_SUCCESS: {
+      draft.singlePost.Comments = draft.singlePost.Comments.concat(action.data);
+      draft.loadCommentLoading = false;
+      draft.loadCommentDone = true;
+      break;
+    }
+    case LOAD_COMMENT_FAILURE:
+      draft.loadCommentLoading = false;
+      draft.loadCommentError = action.error;
+      break;
+    case ADD_COMMENT_REQUEST:
+      draft.addCommentLoading = true;
+      draft.addCommentDone = false;
+      draft.addCommentError = null;
+      break;
+    case ADD_COMMENT_SUCCESS: {
+      const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
+      post.Comments.push(action.data);
+      if (draft.singlePost?.Comments) {
+        draft.singlePost.Comments = draft.singlePost.Comments.concat(action.data);
+      }
+      draft.addCommentLoading = false;
+      draft.addCommentDone = true;
+      break;
+    }
+    case ADD_COMMENT_FAILURE:
+      draft.addCommentLoading = false;
+      draft.addCommentError = action.error;
+      break;
+    case REMOVE_COMMENT_REQUEST:
+      draft.removeCommentLoading = true;
+      draft.removeCommentDone = false;
+      draft.removeCommentError = null;
+      break;
+    case REMOVE_COMMENT_SUCCESS: {
+      draft.singlePost.Comments = draft.singlePost.Comments.filter((v) => v.id !== action.data.CommentId);
+      draft.removeCommentLoading = false;
+      draft.removeCommentDone = true;
+      break;
+    }
+    case REMOVE_COMMENT_FAILURE:
+      draft.removeCommentLoading = false;
+      draft.removeCommentError = action.error;
       break;
     case REMOVE_POSTS:
       draft.mainPosts = [];

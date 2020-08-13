@@ -1,20 +1,35 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector, useDispatch } from 'react-redux';
 import { Input } from 'antd';
 import { HeartOutlined, MessageOutlined, StarOutlined } from '@ant-design/icons';
 
 import { NormalButton, Content, Action, List, Like, CommentList, CommentInput, CommentButton } from './style';
 import useInput from '../../hooks/useInput';
 import Comment from './Comment';
+import { ADD_COMMENT_REQUEST } from '../../reducers/post';
 
-const Contents = ({ like, comments, done, mode }) => {
+const Contents = ({ post, done, mode }) => {
+  const dispatch = useDispatch();
+  const { addCommentDone } = useSelector((state) => state.post);
   const [comment, onChangeComment, setComment] = useInput('');
+  const commentInput = useRef();
+  const [style, setStyle] = useState({});
 
+  useEffect(() => {
+    if (addCommentDone) {
+      setComment('');
+    }
+  }, [addCommentDone]);
   const onComment = useCallback(() => {
-
+    dispatch({
+      type: ADD_COMMENT_REQUEST,
+      data: { content: comment, postId: post.id },
+    });
   });
   const focusComment = useCallback(() => {
-    console.log('comment');
+    setStyle({ display: 'flex' });
+    commentInput.current.focus();
   });
   const toggleLike = useCallback(() => {
     console.log('like');
@@ -37,13 +52,19 @@ const Contents = ({ like, comments, done, mode }) => {
         <Like>
           <NormalButton onClick={showLike}>
             <span>좋아요 </span>
-            <span>{ done ? like : 0 }</span>
+            <span>{ done ? post.Likers.length : 0 }</span>
             <span> 개</span>
           </NormalButton>
         </Like>
       </Action>
-      <CommentList className={mode} />
-      <CommentInput>
+      <CommentList className={mode}>
+        <ul className="root">
+          {mode === 'post' && post.Comments.map((c) => (
+            <Comment key={c.id} comment={c} />
+          ))}
+        </ul>
+      </CommentList>
+      <CommentInput style={style}>
         <Input.TextArea
           value={comment}
           onChange={onChangeComment}
@@ -51,6 +72,7 @@ const Contents = ({ like, comments, done, mode }) => {
           rows={1}
           placeholder="댓글 달기.."
           bordered={false}
+          ref={commentInput}
         />
         <CommentButton style={{ color: '#0095f6' }} onClick={onComment}>게시</CommentButton>
       </CommentInput>
@@ -59,8 +81,7 @@ const Contents = ({ like, comments, done, mode }) => {
 };
 
 Contents.propTypes = {
-  like: PropTypes.number.isRequired,
-  comments: PropTypes.arrayOf(PropTypes.object).isRequired,
+  post: PropTypes.object.isRequired,
   done: PropTypes.bool.isRequired,
   mode: PropTypes.string.isRequired,
 };
