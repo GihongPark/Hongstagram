@@ -210,12 +210,12 @@ function* removeComment(action) {
   }
 }
 
-function loadLikeAPI(lastId) {
-  return axios.get(`/like?lastId=${lastId || 0}`);
+function loadLikeAPI(data, lastId) {
+  return axios.get(`/like/${data}?lastId=${lastId || 0}`);
 }
 function* loadLike(action) {
   try {
-    const result = yield call(loadLikeAPI, action.lastId);
+    const result = yield call(loadLikeAPI, action.data, action.lastId);
     yield put({
       type: LOAD_LIKE_SUCCESS,
       data: result.data,
@@ -230,7 +230,7 @@ function* loadLike(action) {
 }
 
 function addLikeAPI(data) {
-  return axios.patch('/like', data);
+  return axios.patch(`/like/${data}`, data);
 }
 function* addLike(action) {
   try {

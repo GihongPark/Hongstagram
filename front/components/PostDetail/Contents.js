@@ -2,19 +2,21 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { Input } from 'antd';
-import { HeartOutlined, MessageOutlined, StarOutlined } from '@ant-design/icons';
+import { HeartOutlined, MessageOutlined, StarOutlined, HeartTwoTone } from '@ant-design/icons';
 
 import { NormalButton, Content, Action, List, Like, CommentList, CommentInput, CommentButton } from './style';
 import useInput from '../../hooks/useInput';
 import Comment from './Comment';
-import { ADD_COMMENT_REQUEST } from '../../reducers/post';
+import { ADD_COMMENT_REQUEST, ADD_LIKE_REQUEST, REMOVE_LIKE_REQUEST } from '../../reducers/post';
 
 const Contents = ({ post, done, mode }) => {
   const dispatch = useDispatch();
+  const { me } = useSelector((state) => state.user);
   const { addCommentDone } = useSelector((state) => state.post);
   const [comment, onChangeComment, setComment] = useInput('');
   const commentInput = useRef();
   const [style, setStyle] = useState({});
+  const isLiked = post.Likers.find((v) => v.id === me.id);
 
   useEffect(() => {
     if (addCommentDone) {
@@ -32,7 +34,19 @@ const Contents = ({ post, done, mode }) => {
     commentInput.current.focus();
   });
   const toggleLike = useCallback(() => {
-    console.log('like');
+    if (isLiked) {
+      // 언라이크
+      dispatch({
+        type: REMOVE_LIKE_REQUEST,
+        data: post.id,
+      });
+    } else {
+      // 라이크
+      dispatch({
+        type: ADD_LIKE_REQUEST,
+        data: post.id,
+      });
+    }
   });
   const toggleBookmark = useCallback(() => {
     console.log('bookmark');
@@ -45,7 +59,11 @@ const Contents = ({ post, done, mode }) => {
     <Content className={mode}>
       <Action className={mode}>
         <List>
-          <li><NormalButton onClick={toggleLike}><HeartOutlined /></NormalButton></li>
+          <li>
+            <NormalButton onClick={toggleLike}>
+              {isLiked ? <HeartTwoTone twoToneColor="#ed4956" /> : <HeartOutlined />}
+            </NormalButton>
+          </li>
           <li><NormalButton onClick={focusComment}><MessageOutlined /></NormalButton></li>
           <li><NormalButton onClick={toggleBookmark}><StarOutlined /></NormalButton></li>
         </List>

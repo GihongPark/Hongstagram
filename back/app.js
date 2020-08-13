@@ -60,7 +60,7 @@ app.use('/post', postRouter);
 app.use('/posts', postsRouter);
 app.use('/tag', tagRouter);
 app.use('/comment', commentRouter);
-// app.use('/like', likeRouter);
+app.use('/like', likeRouter);
 // app.use('/bookmark', bookmarkRouter);
 
 app.listen(3065, () => {

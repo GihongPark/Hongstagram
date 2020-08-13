@@ -240,6 +240,59 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.removeCommentLoading = false;
       draft.removeCommentError = action.error;
       break;
+    case LOAD_LIKE_REQUEST:
+      draft.loadLikeLoading = true;
+      draft.loadLikeDone = false;
+      draft.loadLikeError = null;
+      break;
+    case LOAD_LIKE_SUCCESS: {
+      draft.singlePost.Likers = draft.singlePost.Likers.concat(action.data);
+      draft.loadLikeLoading = false;
+      draft.loadLikeDone = true;
+      break;
+    }
+    case LOAD_LIKE_FAILURE:
+      draft.loadLikeLoading = false;
+      draft.loadLikeError = action.error;
+      break;
+    case ADD_LIKE_REQUEST:
+      draft.addLikeLoading = true;
+      draft.addLikeDone = false;
+      draft.addLikeError = null;
+      break;
+    case ADD_LIKE_SUCCESS: {
+      const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
+      post.Likers.push({ id: action.data.UserId });
+      if (draft.singlePost?.Likers) {
+        draft.singlePost.Likers.push({ id: action.data.UserId });
+      }
+      draft.addLikeLoading = false;
+      draft.addLikeDone = true;
+      break;
+    }
+    case ADD_LIKE_FAILURE:
+      draft.addLikeLoading = false;
+      draft.addLikeError = action.error;
+      break;
+    case REMOVE_LIKE_REQUEST:
+      draft.removeLikeLoading = true;
+      draft.removeLikeDone = false;
+      draft.removeLikeError = null;
+      break;
+    case REMOVE_LIKE_SUCCESS: {
+      const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
+      post.Likers = post.Likers.filter((v) => v.id !== action.data.UserId);
+      if (draft.singlePost?.Likers) {
+        draft.singlePost.Likers = draft.singlePost.Likers.filter((v) => v.id !== action.data.UserId);
+      }
+      draft.removeLikeLoading = false;
+      draft.removeLikeDone = true;
+      break;
+    }
+    case REMOVE_LIKE_FAILURE:
+      draft.removeLikeLoading = false;
+      draft.removeLikeError = action.error;
+      break;
     case REMOVE_POSTS:
       draft.mainPosts = [];
       break;
