@@ -45,11 +45,13 @@ export const Header = styled.header`
   height: 72px;
   padding: 16px;
 
-  @media (min-width: 768px) {
-    position: absolute;
-    right: 0;
-    top: 0;
-    width: 335px;
+  &.post {
+    @media (min-width: 768px) {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 335px;
+    }
   }
 `;
 export const UserName = styled.div`
@@ -65,29 +67,39 @@ export const UserName = styled.div`
     }
   }
 `;
-export const PostImage = styled.div`
-  @media (min-width: 768px) {
-    margin-right: 335px;
+export const Image = styled.div`
+  &.post {
+    @media (min-width: 768px) {
+      margin-right: 335px;
+    }
   }
 `;
-export const PostWrapper = styled.div`
-  @media (min-width: 768px) {
-    position: absolute;
-    right: 0;
-    top: 72px;
-    bottom: 0;
-    width: 335px;
+export const Content = styled.div`
+  display: flex;
+  flex-flow: column;
+
+  &.post{
+    @media (min-width: 768px) {
+      position: absolute;
+      right: 0;
+      top: 72px;
+      bottom: 0;
+      width: 335px;
+    }
   }
 `;
-export const PostAction = styled.div`
+export const Action = styled.div`
   display: flex;
   flex-flow: column;
   width: 100%;
   height: 68px;
+  margin-bottom: 16px;
 
-  @media (min-width: 768px) {
-    position: absolute;
-    bottom: 55px;
+  &.list {
+    order: 1;
+  }
+  &.post {
+    order: 2;
   }
 `;
 export const List = styled.ul`
@@ -113,7 +125,7 @@ export const Like = styled.div`
     font-weight: 600;
   }
 `;
-export const Comment = styled.div`
+export const CommentList = styled.div`
   width: 100%;
   overflow: hidden;
 
@@ -128,14 +140,17 @@ export const Comment = styled.div`
     width: calc(100% - 8px);
   }
 
+  &.list {
+    order: 2;
+  }
+  &.post {
+    order: 1;
+    flex-grow: 1;
+    border-top: 1px solid #efefef;
+    border-bottom: 1px solid #efefef;
+  }
   @media (max-width: 768px) {
     display: none;
-  }
-  @media (min-width: 768px) {
-    position: absolute;
-    top: 0;
-    bottom: 123px;
-
   }
 `;
 export const CommentInput = styled.div`
@@ -145,10 +160,10 @@ export const CommentInput = styled.div`
   height: 55px;
   border-top: 1px solid #efefef;
   color: #8e8e8e;
+  order: 3;
 
-  @media (min-width: 768px) {
-    position: absolute;
-    bottom: 0;
+  @media (max-width: 768px) {
+    display: none;
   }
 
   textarea {
