@@ -2,10 +2,11 @@ const express = require('express');
 const { Op } = require('sequelize');
 
 const { User, Post, Image, Comment } = require('../models');
+const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
 const router = express.Router();
 
-router.get('/', async (req, res, next) => {  // GET /posts
+router.get('/', isLoggedIn, async (req, res, next) => {  // GET /posts
   try {
     const where = {};
     if (parseInt(req.query.lastId, 10)) { // 초기 로딩이 아닐 때
@@ -33,16 +34,19 @@ router.get('/', async (req, res, next) => {  // GET /posts
         model: User, // 좋아요 누른 사람
         as: 'Likers',
         attributes: ['id'],
+      }, {
+        model: User,
+        as: 'Bookmarkers',
+        attributes: ['id'],
       }],
     });
-    res.status(200).json(posts);
   } catch (error) {
     console.error(error);
     next(error);
   }
 });
 
-router.get('/:username', async (req, res, next) => {  // GET /posts/1
+router.get('/:username', isLoggedIn, async (req, res, next) => {  // GET /posts/1
   try {
     const user = await User.findOne({ where: { username: req.params.username } });
     if (user) {
@@ -71,6 +75,10 @@ router.get('/:username', async (req, res, next) => {  // GET /posts/1
         }, {
           model: User, // 좋아요 누른 사람
           as: 'Likers',
+          attributes: ['id'],
+        }, {
+          model: User,
+          as: 'Bookmarkers',
           attributes: ['id'],
         }],
       });

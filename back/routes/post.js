@@ -115,6 +115,10 @@ router.get('/:postId', async (req, res, next) => { // GET /post/1
           model: User,
           as: 'Likers',
           attributes: ['id'],
+        }, {
+          model: User,
+          as: 'Bookmarkers',
+          attributes: ['id'],
         }],
       })
       res.status(201).json(fullPost);

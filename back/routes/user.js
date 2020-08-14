@@ -42,7 +42,7 @@ router.get('/follows', isLoggedIn, async (req, res, next) => { // GET /user/foll
 });
 
 // 내 프로필 정보
-router.get('/', async (req, res, next) => {  // GET /user
+router.get('/', isLoggedIn, async (req, res, next) => {  // GET /user
   try {
     if (req.user) {
       const MyProfileInfo = await User.findOne({
@@ -79,7 +79,7 @@ router.get('/', async (req, res, next) => {  // GET /user
   }
 });
 // 다른 유저 프로필 정보
-router.get('/:username', async (req, res, next) => {  // GET /user/1
+router.get('/:username', isLoggedIn, async (req, res, next) => {  // GET /user/1
   try {
     const UserProfileInfo = await User.findOne({
       where: { username: req.params.username },
@@ -102,7 +102,7 @@ router.get('/:username', async (req, res, next) => {  // GET /user/1
       data.Posts = data.Posts.length;
       data.Follows = data.Follows.length;
       data.isFollow = data.Followers.some((id) => id === req.user.id);
-      data.Followers = data.Followers.length;
+      data.Followers = data.Followers;
       res.status(200).json(data);
     } else {
       res.status(403).send('존재하지 않는 사용자입니다');
