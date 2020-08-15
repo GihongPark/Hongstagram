@@ -99,18 +99,20 @@ const Contents = ({ post, done, mode }) => {
           ))}
         </ul>
       </CommentList>
-      <CommentInput style={style}>
-        <Input.TextArea
-          value={comment}
-          onChange={onChangeComment}
-          maxLength={500}
-          rows={1}
-          placeholder="댓글 달기.."
-          bordered={false}
-          ref={commentInput}
-        />
-        <CommentButton style={{ color: '#0095f6' }} onClick={onComment}>게시</CommentButton>
-      </CommentInput>
+      {!post.commentAllow && (
+        <CommentInput style={style}>
+          <Input.TextArea
+            value={comment}
+            onChange={onChangeComment}
+            maxLength={500}
+            rows={1}
+            placeholder="댓글 달기.."
+            bordered={false}
+            ref={commentInput}
+          />
+          <CommentButton style={{ color: '#0095f6' }} onClick={onComment}>게시</CommentButton>
+        </CommentInput>
+      )}
     </Content>
   );
 };

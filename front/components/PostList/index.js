@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import PropTypes from 'prop-types';
-import { Row, Col, Modal } from 'antd';
+import { Row, Col, Modal, Empty } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -63,11 +63,15 @@ const PostList = ({ type, username }) => {
   return (
     <article>
       <Row gutter={28}>
-        {mainPosts.map((post) => (
-          <Col key={post.id} xs={8}>
-            <PostCard post={post} showPost={showPost} />
-          </Col>
-        ))}
+        {
+          mainPosts.length > 0
+            ? mainPosts.map((post) => (
+              <Col key={post.id} xs={8}>
+                <PostCard post={post} showPost={showPost} />
+              </Col>
+            ))
+            : <Col xs={24}><Empty /></Col>
+        }
         <Modal
           visible={visible}
           onCancel={onCancel}
