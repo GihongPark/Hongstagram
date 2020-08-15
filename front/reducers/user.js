@@ -116,9 +116,15 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       break;
     case ADD_POST_TO_ME:
       draft.me.Posts += 1;
+      if (draft.userInfo.id === draft.me.id) {
+        draft.userInfo.Posts += 1;
+      }
       break;
     case REMOVE_POST_OF_ME:
       draft.me.Posts -= 1;
+      if (draft.userInfo.id === draft.me.id) {
+        draft.userInfo.Posts -= 1;
+      }
       break;
     default:
       break;

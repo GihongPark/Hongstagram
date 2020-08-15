@@ -300,9 +300,9 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       break;
     case ADD_BOOKMARK_SUCCESS: {
       const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
-      post.Bookmarkrs.push({ id: action.data.UserId });
-      if (draft.singlePost?.Bookmarkrs) {
-        draft.singlePost.Bookmarkrs.push({ id: action.data.UserId });
+      post.Bookmarkers.push({ id: action.data.UserId });
+      if (draft.singlePost?.Bookmarkers) {
+        draft.singlePost.Bookmarkers.push({ id: action.data.UserId });
       }
       draft.addBookmarkLoading = false;
       draft.addBookmarkDone = true;
@@ -319,9 +319,9 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       break;
     case REMOVE_BOOKMARK_SUCCESS: {
       const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
-      post.Bookmarkrs = post.Bookmarkrs.filter((v) => v.id !== action.data.UserId);
-      if (draft.singlePost?.Bookmarkrs) {
-        draft.singlePost.Bookmarkrs = draft.singlePost.Bookmarkrs.filter((v) => v.id !== action.data.UserId);
+      post.Bookmarkers = post.Bookmarkers.filter((v) => v.id !== action.data.UserId);
+      if (draft.singlePost?.Bookmarkers) {
+        draft.singlePost.Bookmarkers = draft.singlePost.Bookmarkers.filter((v) => v.id !== action.data.UserId);
       }
       draft.removeBookmarkLoading = false;
       draft.removeBookmarkDone = true;

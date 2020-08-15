@@ -2,12 +2,12 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { Input } from 'antd';
-import { HeartOutlined, MessageOutlined, StarOutlined, HeartTwoTone } from '@ant-design/icons';
+import { HeartOutlined, MessageOutlined, StarOutlined, HeartTwoTone, StarTwoTone } from '@ant-design/icons';
 
 import { NormalButton, Content, Action, List, Like, CommentList, CommentInput, CommentButton } from './style';
 import useInput from '../../hooks/useInput';
 import Comment from './Comment';
-import { ADD_COMMENT_REQUEST, ADD_LIKE_REQUEST, REMOVE_LIKE_REQUEST } from '../../reducers/post';
+import { ADD_COMMENT_REQUEST, ADD_LIKE_REQUEST, REMOVE_LIKE_REQUEST, REMOVE_BOOKMARK_REQUEST, ADD_BOOKMARK_REQUEST } from '../../reducers/post';
 
 const Contents = ({ post, done, mode }) => {
   const dispatch = useDispatch();
@@ -17,6 +17,7 @@ const Contents = ({ post, done, mode }) => {
   const commentInput = useRef();
   const [style, setStyle] = useState({});
   const isLiked = post.Likers.find((v) => v.id === me.id);
+  const isBookmarked = post.Bookmarkers.find((v) => v.id === me.id);
 
   useEffect(() => {
     if (addCommentDone) {
@@ -49,7 +50,19 @@ const Contents = ({ post, done, mode }) => {
     }
   });
   const toggleBookmark = useCallback(() => {
-    console.log('bookmark');
+    if (isBookmarked) {
+      // 언라이크
+      dispatch({
+        type: REMOVE_BOOKMARK_REQUEST,
+        data: post.id,
+      });
+    } else {
+      // 라이크
+      dispatch({
+        type: ADD_BOOKMARK_REQUEST,
+        data: post.id,
+      });
+    }
   });
   const showLike = useCallback(() => {
     console.log('like');
@@ -65,7 +78,11 @@ const Contents = ({ post, done, mode }) => {
             </NormalButton>
           </li>
           <li><NormalButton onClick={focusComment}><MessageOutlined /></NormalButton></li>
-          <li><NormalButton onClick={toggleBookmark}><StarOutlined /></NormalButton></li>
+          <li>
+            <NormalButton onClick={toggleBookmark}>
+              {isBookmarked ? <StarTwoTone twoToneColor="#ffd700" /> : <StarOutlined />}
+            </NormalButton>
+          </li>
         </List>
         <Like>
           <NormalButton onClick={showLike}>

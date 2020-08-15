@@ -102,7 +102,7 @@ router.get('/:username', isLoggedIn, async (req, res, next) => {  // GET /user/1
       data.Posts = data.Posts.length;
       data.Follows = data.Follows.length;
       data.isFollow = data.Followers.some((id) => id === req.user.id);
-      data.Followers = data.Followers;
+      data.Followers = data.Followers.length;
       res.status(200).json(data);
     } else {
       res.status(403).send('존재하지 않는 사용자입니다');

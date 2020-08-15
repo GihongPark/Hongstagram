@@ -201,7 +201,7 @@ export const CommentInput = styled.div`
 
   textarea {
     resize: none;
-    padding: 17px 0;
+    padding: 17px 11px;
   }
 `;
 export const CommentButton = styled(NormalButton)`

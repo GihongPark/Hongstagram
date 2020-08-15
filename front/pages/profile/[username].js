@@ -101,13 +101,13 @@ const Profile = () => {
                     </Col>
                     <Col xs={0} lg={24}>
                       <ul>
-                        <li>게시물 <span>{userInfo.Posts}</span></li>
-                        <li><Button type="text">팔로워 <span>{userInfo.Followers}</span></Button></li>
-                        <li><Button type="text">팔로우 <span>{userInfo.Follows}</span></Button></li>
+                        <li>게시물 <span>{userInfo?.Posts}</span></li>
+                        <li><Button type="text">팔로워 <span>{userInfo?.Followers}</span></Button></li>
+                        <li><Button type="text">팔로우 <span>{userInfo?.Follows}</span></Button></li>
                       </ul>
                     </Col>
                     <Col xs={0} lg={24}>
-                      <h1>{userInfo.name}</h1>
+                      <h1>{userInfo?.name}</h1>
                     </Col>
                   </Row>
                 </ProfileInfo>
@@ -117,18 +117,18 @@ const Profile = () => {
           <ListWrapper>
             <Col xs={8} lg={0}>
               <div>게시물</div>
-              <strong>{userInfo.Posts}</strong>
+              <strong>{userInfo?.Posts}</strong>
             </Col>
             <Col xs={8} lg={0}>
               <Button type="text">
                 <div>팔로워</div>
-                <strong>{userInfo.Followers}</strong>
+                <strong>{userInfo?.Followers}</strong>
               </Button>
             </Col>
             <Col xs={8} lg={0}>
               <Button type="text">
                 <div>팔로우</div>
-                <strong>{userInfo.Follows}</strong>
+                <strong>{userInfo?.Follows}</strong>
               </Button>
             </Col>
           </ListWrapper>
@@ -136,7 +136,7 @@ const Profile = () => {
         <div>
           <Tabs defaultActiveKey="1" tabBarGutter={52} onChange={onChangeTab} centered>
             <TabPane tab="게시물" key="posts" />
-            {userInfo?.id === me?.id ? <TabPane tab="저장됨" key="bookmark" disabled /> : null}
+            {userInfo?.id === me?.id ? <TabPane tab="저장됨" key="bookmark" /> : null}
             <TabPane tab="태그됨" key="tag" />
           </Tabs>
           <PostList type={type} username={username} />

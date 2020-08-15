@@ -230,7 +230,7 @@ function* loadLike(action) {
 }
 
 function addLikeAPI(data) {
-  return axios.patch(`/like/${data}`, data);
+  return axios.patch(`/like/${data}`);
 }
 function* addLike(action) {
   try {
@@ -267,27 +267,8 @@ function* removeLike(action) {
   }
 }
 
-function loadBookmarkAPI(lastId) {
-  return axios.get(`/bookmark?lastId=${lastId || 0}`);
-}
-function* loadBookmark(action) {
-  try {
-    const result = yield call(loadBookmarkAPI, action.lastId);
-    yield put({
-      type: LOAD_BOOKMARK_SUCCESS,
-      data: result.data,
-    });
-  } catch (err) {
-    console.error(err);
-    yield put({
-      type: LOAD_BOOKMARK_FAILURE,
-      error: err.response.data,
-    });
-  }
-}
-
 function addBookmarkAPI(data) {
-  return axios.patch('/bookmark', data);
+  return axios.patch(`/bookmark/${data}`);
 }
 function* addBookmark(action) {
   try {
@@ -387,10 +368,6 @@ function* watchRemoveLike() {
   yield takeLatest(REMOVE_LIKE_REQUEST, removeLike);
 }
 
-function* watchLoadBookmark() {
-  yield throttle(5000, LOAD_BOOKMARK_REQUEST, loadBookmark);
-}
-
 function* watchAddBookmark() {
   yield takeLatest(ADD_BOOKMARK_REQUEST, addBookmark);
 }
@@ -416,7 +393,6 @@ export default function* postSaga() {
     fork(watchLoadLike),
     fork(watchAddLike),
     fork(watchRemoveLike),
-    fork(watchLoadBookmark),
     fork(watchAddBookmark),
     fork(watchRemoveBookmark),
     fork(watchUploadImages),
