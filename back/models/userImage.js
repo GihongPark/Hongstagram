@@ -1,7 +1,7 @@
 const DataTypes = require('sequelize');
 const { Model } = DataTypes;
 
-module.exports = class Image extends Model {
+module.exports = class UserImage extends Model {
   static init(sequelize) {
     return super.init({
       src: {
@@ -17,6 +17,6 @@ module.exports = class Image extends Model {
     });
   }
   static associate(db) {
-    db.Image.belongsTo(db.Post);
+    db.Image.belongsTo(db.User);
   }
 };

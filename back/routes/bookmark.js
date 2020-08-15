@@ -36,7 +36,7 @@ router.delete('/:postId', isLoggedIn, async (req, res, next) => {  // DELETE /bo
   }
 });
 
-router.get('/', async (req, res, next) => {  // GET /bookmark
+router.get('/:username', isLoggedIn, async (req, res, next) => {  // GET /bookmark/1
   try {
     const where = {};
     if (parseInt(req.query.lastId, 10)) { // 초기 로딩이 아닐 때

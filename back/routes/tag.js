@@ -35,6 +35,10 @@ router.get('/:username', async (req, res, next) => {  // GET /tag/1
           model: User, // 좋아요 누른 사람
           as: 'Likers',
           attributes: ['id'],
+        }, {
+          model: User,
+          as: 'Bookmarkers',
+          attributes: ['id'],
         }],
       });
       res.status(200).json(tag);
