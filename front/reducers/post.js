@@ -293,6 +293,44 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.removeLikeLoading = false;
       draft.removeLikeError = action.error;
       break;
+    case ADD_BOOKMARK_REQUEST:
+      draft.addBookmarkLoading = true;
+      draft.addBookmarkDone = false;
+      draft.addBookmarkError = null;
+      break;
+    case ADD_BOOKMARK_SUCCESS: {
+      const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
+      post.Bookmarkrs.push({ id: action.data.UserId });
+      if (draft.singlePost?.Bookmarkrs) {
+        draft.singlePost.Bookmarkrs.push({ id: action.data.UserId });
+      }
+      draft.addBookmarkLoading = false;
+      draft.addBookmarkDone = true;
+      break;
+    }
+    case ADD_BOOKMARK_FAILURE:
+      draft.addBookmarkLoading = false;
+      draft.addBookmarkError = action.error;
+      break;
+    case REMOVE_BOOKMARK_REQUEST:
+      draft.removeBookmarkLoading = true;
+      draft.removeBookmarkDone = false;
+      draft.removeBookmarkError = null;
+      break;
+    case REMOVE_BOOKMARK_SUCCESS: {
+      const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
+      post.Bookmarkrs = post.Bookmarkrs.filter((v) => v.id !== action.data.UserId);
+      if (draft.singlePost?.Bookmarkrs) {
+        draft.singlePost.Bookmarkrs = draft.singlePost.Bookmarkrs.filter((v) => v.id !== action.data.UserId);
+      }
+      draft.removeBookmarkLoading = false;
+      draft.removeBookmarkDone = true;
+      break;
+    }
+    case REMOVE_BOOKMARK_FAILURE:
+      draft.removeBookmarkLoading = false;
+      draft.removeBookmarkError = action.error;
+      break;
     case REMOVE_POSTS:
       draft.mainPosts = [];
       break;

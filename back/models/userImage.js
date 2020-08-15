@@ -9,14 +9,14 @@ module.exports = class UserImage extends Model {
         allowNull: false,
       },
     }, {
-      modelName: 'Image',
-      tableName: 'images',
+      modelName: 'UserImage',
+      tableName: 'userimages',
       charset: 'utf8',
       collate: 'utf8_general_ci',
       sequelize,
     });
   }
   static associate(db) {
-    db.Image.belongsTo(db.User);
+    db.UserImage.belongsTo(db.User);
   }
 };
