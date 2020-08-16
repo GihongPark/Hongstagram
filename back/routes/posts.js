@@ -8,7 +8,11 @@ const router = express.Router();
 
 router.get('/', isLoggedIn, async (req, res, next) => {  // GET /posts
   try {
-    const where = {};
+    const user = await User.findOne({ where: { id: req.user.id } });
+    const follows = await user.getFollows();
+    const followId = follows.map((follow) => follow.id);
+
+    const where = {UserId: [req.user.id, ...followId]};
     if (parseInt(req.query.lastId, 10)) { // 초기 로딩이 아닐 때
       where.id = {[Op.lt]: parseInt(req.query.lastId, 10)}
     }
@@ -40,6 +44,7 @@ router.get('/', isLoggedIn, async (req, res, next) => {  // GET /posts
         attributes: ['id'],
       }],
     });
+    res.status(200).json(posts);
   } catch (error) {
     console.error(error);
     next(error);

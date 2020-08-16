@@ -23,9 +23,13 @@ export const Global = createGlobalStyle`
       height: 500px;
     }
   }
-  
-  article.wrapper {
-    position: relative;
+`;
+export const PostWrapper = styled.article`
+  position: relative;
+
+  &.list {
+    border: 1px solid #dbdbdb;
+    margin-bottom: 60px;
   }
 `;
 
@@ -129,7 +133,10 @@ export const CommentList = styled.div`
   width: 100%;
   overflow: hidden;
 
-  ul.root {
+  &.list ul.root {
+    margin: 0 8px;
+  }
+  &.post ul.root {
     box-sizing: content-box;
     height: calc(100% - 32px);
     overflow-x: hidden;
@@ -137,15 +144,18 @@ export const CommentList = styled.div`
     left: 0;
     padding: 16px 12px;
     width: calc(100% - 8px);
+    
+    li {
+      margin-left: -12px;
+      padding: 12px 16px;
+    }
   }
-
+  
   li {
     display: flex;
-    padding: 12px 16px;
-    margin-left: -12px;
-    overflow: hidden;
     word-break: break-word;
-
+    overflow: hidden;
+    
     &:first-of-type {
       margin-top: -5px;
     }
@@ -164,12 +174,12 @@ export const CommentList = styled.div`
     .content {
       margin-left: 12px;
 
-      h3 {
-        display: inline;
-        font-size: 14px;
-        font-weight: 600;
-        margin-right: 4px;
-      }
+    }
+    h3 {
+      display: inline;
+      font-size: 14px;
+      font-weight: 600;
+      margin-right: 4px;
     }
   }
 

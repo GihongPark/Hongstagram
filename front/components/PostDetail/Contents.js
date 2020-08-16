@@ -1,14 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
-import { Input, Avatar } from 'antd';
+import { Input, Avatar, Modal } from 'antd';
 import { HeartOutlined, MessageOutlined, StarOutlined, HeartTwoTone, StarTwoTone, UserOutlined } from '@ant-design/icons';
 import Link from 'next/link';
 
-import { NormalButton, Content, Action, List, Like, CommentList, CommentInput, CommentButton } from './style';
+import { Global, NormalButton, Content, Action, List, Like, CommentList, CommentInput, CommentButton } from './style';
 import useInput from '../../hooks/useInput';
 import Comment from './Comment';
 import { ADD_COMMENT_REQUEST, ADD_LIKE_REQUEST, REMOVE_LIKE_REQUEST, REMOVE_BOOKMARK_REQUEST, ADD_BOOKMARK_REQUEST } from '../../reducers/post';
+import PostDetail from './';
 
 const Contents = ({ post, done, mode }) => {
   const dispatch = useDispatch();
@@ -17,6 +18,8 @@ const Contents = ({ post, done, mode }) => {
   const [comment, onChangeComment, setComment] = useInput('');
   const commentInput = useRef();
   const [style, setStyle] = useState({});
+  const [visible, setVisible] = useState(false);
+
   const isLiked = post.Likers.find((v) => v.id === me.id);
   const isBookmarked = post.Bookmarkers.find((v) => v.id === me.id);
 
@@ -32,8 +35,10 @@ const Contents = ({ post, done, mode }) => {
     });
   });
   const focusComment = useCallback(() => {
-    setStyle({ display: 'flex' });
-    commentInput.current.focus();
+    if (!post.commentAllow) {
+      setStyle({ display: 'flex' });
+      commentInput.current.focus();
+    }
   });
   const toggleLike = useCallback(() => {
     if (isLiked) {
@@ -68,6 +73,12 @@ const Contents = ({ post, done, mode }) => {
   const showLike = useCallback(() => {
     console.log('like');
   });
+  const showModal = useCallback(() => {
+    setVisible(true);
+  });
+  const onCancel = useCallback(() => {
+    setVisible(false);
+  });
 
   return (
     <Content className={mode}>
@@ -95,13 +106,51 @@ const Contents = ({ post, done, mode }) => {
       </Action>
       <CommentList className={mode}>
         <ul className="root">
-          <li>
-            <Link href={`/profile/${post.User.username}`}><a><Avatar src={post.User.src} icon={<UserOutlined />} size={32} /></a></Link>
-            <div className="content"><h3>{post.User.username}</h3> {post.content}</div>
-          </li>
-          {mode === 'post' && post.Comments.map((c) => (
-            <Comment key={c.id} comment={c} />
-          ))}
+          {mode === 'list' && (
+            <>
+              {post.content !== '' && (
+                <li>
+                  <Link href={`/profile/${post.User.username}`}><a><h3>{post.User.username}</h3></a></Link>{post.content}
+                </li>
+              )}
+              {post.Comments.length > 2 && (
+                <>
+                  <NormalButton onClick={showModal}>댓글 {post.Comments.length}개 모두 보기</NormalButton>
+                  <Modal
+                    visible={visible}
+                    onCancel={onCancel}
+                    footer={null}
+                    width="100%"
+                    bodyStyle={{ padding: '0' }}
+                  >
+                    <Global />
+                    <PostDetail post={post} loading mode="post" />
+                  </Modal>
+                </>
+              )}
+              {post.Comments[0] && (
+                <li>
+                  <Link href={`/profile/${post.Comments[0].User.username}`}><a><h3>{post.Comments[0].User.username}</h3></a></Link>{post.Comments[0].content}
+                </li>
+              )}
+              {post.Comments[1] && (
+                <li>
+                  <Link href={`/profile/${post.Comments[1].User.username}`}><a><h3>{post.Comments[1].User.username}</h3></a></Link>{post.Comments[1].content}
+                </li>
+              )}
+            </>
+          )}
+          {mode === 'post' && (
+            <>
+              <li>
+                <Link href={`/profile/${post.User.username}`}><a><Avatar src={post.User.src} icon={<UserOutlined />} size={32} /></a></Link>
+                <div className="content"><h3>{post.User.username}</h3> {post.content}</div>
+              </li>
+              {post.Comments.map((c) => (
+                <Comment key={c.id} comment={c} />
+              ))}
+            </>
+          )}
         </ul>
       </CommentList>
       {!post.commentAllow && (

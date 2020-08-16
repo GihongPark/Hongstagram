@@ -7,10 +7,13 @@ import axios from 'axios';
 import AppLayout from '../components/AppLayout';
 import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import wrapper from '../store/configureStore';
+import { LOAD_POSTS_REQUEST } from '../reducers/post';
+import PostDetail from '../components/PostDetail';
 
 const Home = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
+  const { mainPosts, loadPostsDone } = useSelector((state) => state.post);
 
   useEffect(() => {
     if (!me || !me.id) {
@@ -20,7 +23,11 @@ const Home = () => {
 
   return (
     <AppLayout>
-      home
+      <div style={{ width: '614px' }}>
+        {mainPosts.map((post) => (
+          <PostDetail post={post} loading={loadPostsDone} mode="list" />
+        ))}
+      </div>
     </AppLayout>
   );
 };
@@ -33,6 +40,9 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
   }
   context.store.dispatch({
     type: LOAD_MY_INFO_REQUEST,
+  });
+  context.store.dispatch({
+    type: LOAD_POSTS_REQUEST,
   });
 
   context.store.dispatch(END);

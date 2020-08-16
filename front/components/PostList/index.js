@@ -5,15 +5,15 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 
 import PostDetail from '../PostDetail';
-import { LOAD_TYPE_POSTS_REQUEST, REMOVE_POSTS } from '../../reducers/post';
+import { LOAD_TYPE_POSTS_REQUEST, REMOVE_POSTS, LOAD_POST_REQUEST } from '../../reducers/post';
 import PostCard from './PostCard';
 import { Loading } from './style';
+import { Global } from '../PostDetail/style';
 
 const PostList = ({ type, username }) => {
   const dispatch = useDispatch();
-  const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector((state) => state.post);
+  const { mainPosts, hasMorePosts, loadPostsLoading, loadPostDone, singlePost } = useSelector((state) => state.post);
   const [visible, setVisible] = useState(false);
-  const [postId, setPostId] = useState(0);
 
   useEffect(() => {
     dispatch({
@@ -54,8 +54,11 @@ const PostList = ({ type, username }) => {
   }, [mainPosts, hasMorePosts, loadPostsLoading]);
 
   const showPost = useCallback((id) => () => {
-    setPostId(id);
     setVisible(true);
+    dispatch({
+      type: LOAD_POST_REQUEST,
+      data: id,
+    });
   });
   const onCancel = useCallback(() => {
     setVisible(false);
@@ -79,7 +82,8 @@ const PostList = ({ type, username }) => {
           width="100%"
           bodyStyle={{ padding: '0' }}
         >
-          <PostDetail postId={postId} />
+          <Global />
+          <PostDetail post={singlePost} loading={loadPostDone} mode="post" />
         </Modal>
       </Row>
       {hasMorePosts && (
