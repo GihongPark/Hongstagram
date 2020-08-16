@@ -4,6 +4,7 @@ import { Modal, Form, Input, Button, Row, Switch } from 'antd';
 import { DeleteFilled } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import Slick from 'react-slick';
+import Router from 'next/router';
 
 import useInput from '../../hooks/useInput';
 import { UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE, ADD_POST_REQUEST, REMOVE_IMAGE_ALL } from '../../reducers/post';
@@ -30,19 +31,20 @@ const Upload = ({ visible, setVisible }) => {
   useEffect(() => {
     if (addPostDone) {
       alert('게시물이 등록되었습니다.');
+      Router.reload();
 
-      setVisible(false);
-      setContent('');
-      setCommentAllow(false);
-      setCurrent(0);
+      // setVisible(false);
+      // setContent('');
+      // setCommentAllow(false);
+      // setCurrent(0);
 
-      // 이미지 삭제
-      dispatch({
-        type: REMOVE_IMAGE_ALL,
-      });
-      if (imageInput.current) {
-        imageInput.current.value = null;
-      }
+      // // 이미지 삭제
+      // dispatch({
+      //   type: REMOVE_IMAGE_ALL,
+      // });
+      // if (imageInput.current) {
+      //   imageInput.current.value = null;
+      // }
     }
   }, [addPostDone]);
 
