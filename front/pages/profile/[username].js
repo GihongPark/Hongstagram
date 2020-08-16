@@ -1,5 +1,5 @@
-import React, { useEffect, useCallback, useState } from 'react';
-import { Row, Col, Avatar, Button, Tabs } from 'antd';
+import React, { useEffect, useCallback, useState, useRef } from 'react';
+import { Row, Col, Avatar, Button, Tabs, Modal } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
@@ -8,10 +8,12 @@ import axios from 'axios';
 
 import AppLayout from '../../components/AppLayout';
 import PostList from '../../components/PostList';
-import { LOAD_MY_INFO_REQUEST, LOAD_USER_REQUEST, LOG_OUT_REQUEST, FOLLOW_REQUEST, UNFOLLOW_REQUEST } from '../../reducers/user';
+import { LOAD_MY_INFO_REQUEST, LOAD_USER_REQUEST, LOG_OUT_REQUEST, FOLLOW_REQUEST, UNFOLLOW_REQUEST, UPLOAD_PROFILE_IMAGE_REQUEST, REMOVE_PROFILE_IMAGE_REQUEST } from '../../reducers/user';
 import wrapper from '../../store/configureStore';
-import { UserInfo, ProfileImageButton, ProfileInfo, Global, ListWrapper, SettingButton } from './style';
+import { UserInfo, ProfileImageButton, ProfileImageDiv, ProfileInfo, Global, ListWrapper, SettingButton, ProfileImageHeader, ProfileImageAction } from './style';
 import { FlexColumn } from '../../components/AppLayout/style';
+import { NormalButton } from '../../components/PostDetail/style';
+import { backUrl } from '../../config/config';
 
 const { TabPane } = Tabs;
 
@@ -19,8 +21,12 @@ const Profile = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { username } = router.query;
-  const { me, userInfo, loadUserError, logOutLoading } = useSelector((state) => state.user);
+  const {
+    me, userInfo, loadUserError, logOutLoading, uploadProfileImageDone, removeProfileImageDone,
+  } = useSelector((state) => state.user);
   const [type, setType] = useState('posts');
+  const [visible, setVisible] = useState(false);
+  const imageInput = useRef();
 
   useEffect(() => {
     if (!me || !me.id) {
@@ -33,10 +39,40 @@ const Profile = () => {
       router.back();
     }
   }, [loadUserError]);
+  useEffect(() => {
+    if (uploadProfileImageDone || removeProfileImageDone) {
+      setVisible(false);
+    }
+  }, [uploadProfileImageDone, removeProfileImageDone]);
 
+  const onChangeImages = useCallback((e) => {
+    if (userInfo?.id === me?.id) {
+      const imageFormData = new FormData();
+      imageFormData.append('image', e.target.files[0]);
+      dispatch({
+        type: UPLOAD_PROFILE_IMAGE_REQUEST,
+        data: imageFormData,
+      });
+    }
+  });
+  const onProfileUpload = useCallback(() => {
+    if (userInfo?.id === me?.id) {
+      imageInput.current.click();
+    }
+  }, [imageInput.current]);
+  const onProfileDelete = useCallback(() => {
+    if (userInfo?.id === me?.id) {
+      dispatch({
+        type: REMOVE_PROFILE_IMAGE_REQUEST,
+      });
+    }
+  });
   const onPopupProfileImage = useCallback(() => {
-    // TODO: 프로필 이미지 변경 팝업 생성
-  }, []);
+    setVisible(true);
+  });
+  const onCancel = useCallback(() => {
+    setVisible(false);
+  });
 
   const onLogOut = useCallback(() => {
     dispatch({
@@ -68,16 +104,64 @@ const Profile = () => {
           <div className="wrapper">
             <Row>
               <Col xs={8}>
-                <ProfileImageButton onClick={onPopupProfileImage}>
-                  <Row>
-                    <Col xs={24} lg={0}>
-                      <Avatar src={userInfo?.src} icon={<UserOutlined />} size={77} />
-                    </Col>
-                    <Col xs={0} lg={24}>
-                      <Avatar src={userInfo?.src} icon={<UserOutlined />} size={150} />
-                    </Col>
-                  </Row>
-                </ProfileImageButton>
+                {userInfo?.id === me?.id && (
+                  <>
+                    <ProfileImageButton onClick={onPopupProfileImage}>
+                      <Row>
+                        <Col xs={24} lg={0}>
+                          {
+                            userInfo?.src
+                              ? <Avatar src={`${backUrl}/${userInfo?.src}`} size={77} />
+                              : <Avatar icon={<UserOutlined />} size={77} />
+                          }
+                        </Col>
+                        <Col xs={0} lg={24}>
+                          {
+                            userInfo?.src
+                              ? <Avatar src={`${backUrl}/${userInfo?.src}`} size={150} />
+                              : <Avatar icon={<UserOutlined />} size={150} />
+                          }
+                        </Col>
+                      </Row>
+                    </ProfileImageButton>
+                    <Modal
+                      visible={visible}
+                      onCancel={onCancel}
+                      footer={null}
+                      width="400px"
+                      bodyStyle={{ padding: '0' }}
+                      closable={false}
+                    >
+                      <ProfileImageHeader>프로필 사진 바꾸기</ProfileImageHeader>
+                      <ProfileImageAction>
+                        <input type="file" name="image" hidden ref={imageInput} onChange={onChangeImages} />
+                        <NormalButton style={{ color: '#0095f6', fontWeight: 600 }} onClick={onProfileUpload}>사진 업로드</NormalButton>
+                        <NormalButton style={{ color: '#ed4956', fontWeight: 600 }} onClick={onProfileDelete}>현재 사진 삭제</NormalButton>
+                        <NormalButton onClick={onCancel}>취소</NormalButton>
+                      </ProfileImageAction>
+                    </Modal>
+                  </>
+                )}
+                {userInfo?.id !== me?.id && (
+                  <ProfileImageDiv>
+                    <Row>
+                      <Col xs={24} lg={0}>
+                        {
+                          userInfo?.src
+                            ? <Avatar src={`${backUrl}/${userInfo?.src}`} size={77} />
+                            : <Avatar icon={<UserOutlined />} size={77} />
+                        }
+                      </Col>
+                      <Col xs={0} lg={24}>
+                        {
+                          userInfo?.src
+                            ? <Avatar src={`${backUrl}/${userInfo?.src}`} size={150} />
+                            : <Avatar icon={<UserOutlined />} size={150} />
+                        }
+                      </Col>
+                    </Row>
+                  </ProfileImageDiv>
+                )}
               </Col>
               <Col xs={16}>
                 <ProfileInfo>
@@ -107,7 +191,8 @@ const Profile = () => {
                         {
                           userInfo?.id === me?.id
                             ? <Button className="xs">프로필 편집</Button>
-                            : <Button className="xs">메시지 보내기</Button>
+                            // : <Button className="xs">메시지 보내기</Button>
+                            : <></>
                         }
                       </SettingButton>
                     </Col>

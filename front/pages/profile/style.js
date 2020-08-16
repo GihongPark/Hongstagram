@@ -25,6 +25,30 @@ export const ProfileImageButton = styled.button`
   background-color: transparent;
   cursor: pointer;
 `;
+export const ProfileImageHeader = styled.div`
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 24px;
+  padding: 32px 32px 16px;
+  text-align: center;
+`;
+export const ProfileImageAction = styled.div`
+  button {
+    display: block;
+    width: 100%;
+    min-height: 48px;
+    border-top: 1px solid #dbdbdb;
+    line-height: 1.5;
+    padding: 4px 8px;
+    text-align: center;
+    user-select: none;
+    vertical-align: middle;
+  }
+`;
+export const ProfileImageDiv = styled.div`
+  display: flex;
+  justify-content: center;
+`;
 
 export const ProfileInfo = styled.div`
   > * {

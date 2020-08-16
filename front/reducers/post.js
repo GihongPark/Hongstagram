@@ -117,6 +117,9 @@ export const REMOVE_BOOKMARK_REQUEST = 'REMOVE_BOOKMARK_REQUEST';
 export const REMOVE_BOOKMARK_SUCCESS = 'REMOVE_BOOKMARK_SUCCESS';
 export const REMOVE_BOOKMARK_FAILURE = 'REMOVE_BOOKMARK_FAILURE';
 
+export const FOLLOW_TO_POST = 'FOLLOW_TO_POST';
+export const UNFOLLOW_TO_POST = 'UNFOLLOW_TO_POST';
+
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
     case LOAD_POST_REQUEST:
@@ -351,6 +354,16 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       break;
     case REMOVE_IMAGE_ALL:
       draft.imagePaths = [];
+      break;
+    case FOLLOW_TO_POST:
+      if (draft.singlePost) {
+        draft.singlePost.User.isFollow = true;
+      }
+      break;
+    case UNFOLLOW_TO_POST:
+      if (draft.singlePost) {
+        draft.singlePost.User.isFollow = false;
+      }
       break;
     default:
       break;

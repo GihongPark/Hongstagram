@@ -23,7 +23,14 @@ import {
   UNFOLLOW_FAILURE,
   UNFOLLOW_REQUEST,
   UNFOLLOW_SUCCESS,
+  UPLOAD_PROFILE_IMAGE_REQUEST,
+  UPLOAD_PROFILE_IMAGE_SUCCESS,
+  UPLOAD_PROFILE_IMAGE_FAILURE,
+  REMOVE_PROFILE_IMAGE_REQUEST,
+  REMOVE_PROFILE_IMAGE_SUCCESS,
+  REMOVE_PROFILE_IMAGE_FAILURE,
 } from '../reducers/user';
+import { FOLLOW_TO_POST, UNFOLLOW_TO_POST } from '../reducers/post';
 
 function loadMyInfoAPI() {
   return axios.get('/user');
@@ -130,6 +137,9 @@ function* follow(action) {
       type: FOLLOW_SUCCESS,
       data: result.data,
     });
+    yield put({
+      type: FOLLOW_TO_POST,
+    });
   } catch (err) {
     console.error(err);
     yield put({
@@ -149,10 +159,51 @@ function* unfollow(action) {
       type: UNFOLLOW_SUCCESS,
       data: result.data,
     });
+    yield put({
+      type: UNFOLLOW_TO_POST,
+    });
   } catch (err) {
     console.error(err);
     yield put({
       type: UNFOLLOW_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function uploadProfileImageAPI(data) {
+  return axios.post('/user/image', data);
+}
+function* uploadProfileImage(action) {
+  try {
+    const result = yield call(uploadProfileImageAPI, action.data);
+    yield put({
+      type: UPLOAD_PROFILE_IMAGE_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: UPLOAD_PROFILE_IMAGE_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function removeProfileImageAPI() {
+  return axios.delete('/user/image');
+}
+function* removeProfileImage() {
+  try {
+    const result = yield call(removeProfileImageAPI);
+    yield put({
+      type: REMOVE_PROFILE_IMAGE_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: REMOVE_PROFILE_IMAGE_FAILURE,
       error: err.response.data,
     });
   }
@@ -186,6 +237,14 @@ function* watchUnfollow() {
   yield takeLatest(UNFOLLOW_REQUEST, unfollow);
 }
 
+function* watchUploadProfileImage() {
+  yield takeLatest(UPLOAD_PROFILE_IMAGE_REQUEST, uploadProfileImage);
+}
+
+function* watchRemoveProfileImage() {
+  yield takeLatest(REMOVE_PROFILE_IMAGE_REQUEST, removeProfileImage);
+}
+
 export default function* userSaga() {
   yield all([
     fork(watchLoadMyInfo),
@@ -195,5 +254,7 @@ export default function* userSaga() {
     fork(watchSignUp),
     fork(watchFollow),
     fork(watchUnfollow),
+    fork(watchUploadProfileImage),
+    fork(watchRemoveProfileImage),
   ]);
 }

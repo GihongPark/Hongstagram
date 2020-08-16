@@ -106,6 +106,11 @@ router.get('/:postId', async (req, res, next) => { // GET /post/1
         include: [{
           model: User,
           attributes: ['id', 'username', 'src'],
+          include: [{
+            model: User,
+            as: 'Followers',
+            attributes: ['id'],
+          }]
         }, {
           model: Image,
         }, {
@@ -124,8 +129,15 @@ router.get('/:postId', async (req, res, next) => { // GET /post/1
           as: 'Bookmarkers',
           attributes: ['id'],
         }],
-      })
-      res.status(201).json(fullPost);
+      });
+
+      if (fullPost) {
+        const data = fullPost.toJSON();
+        data.User.isFollow = data.User.Followers.some((follower => follower.id === req.user.id));
+        res.status(201).json(data);
+      } else {
+        return res.status(403).send('존재하지 않는 게시글입니다.');
+      }
     } else {
       return res.status(403).send('존재하지 않는 게시글입니다.');
     }

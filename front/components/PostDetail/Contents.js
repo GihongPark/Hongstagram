@@ -10,6 +10,7 @@ import useInput from '../../hooks/useInput';
 import Comment from './Comment';
 import { ADD_COMMENT_REQUEST, ADD_LIKE_REQUEST, REMOVE_LIKE_REQUEST, REMOVE_BOOKMARK_REQUEST, ADD_BOOKMARK_REQUEST } from '../../reducers/post';
 import PostDetail from './';
+import { backUrl } from '../../config/config';
 
 const Contents = ({ post, mode }) => {
   const dispatch = useDispatch();
@@ -143,8 +144,18 @@ const Contents = ({ post, mode }) => {
           {mode === 'post' && (
             <>
               <li>
-                <Link href={`/profile/${post.User.username}`}><a><Avatar src={post.User.src} icon={<UserOutlined />} size={32} /></a></Link>
-                <div className="content"><h3>{post.User.username}</h3> {post.content}</div>
+                <Link href={`/profile/${post.User.username}`}>
+                  <a>
+                    {
+                      post.User.src
+                        ? <Avatar src={`${backUrl}/${post.User.src}`} size={32} />
+                        : <Avatar icon={<UserOutlined />} size={32} />
+                    }
+                  </a>
+                </Link>
+                <div className="content">
+                  <Link href={`/profile/${post.User.username}`}><a style={{ color: '#222' }}><h3>{post.User.username}</h3></a></Link> {post.content}
+                </div>
               </li>
               {post.Comments.map((c) => (
                 <Comment key={c.id} comment={c} />

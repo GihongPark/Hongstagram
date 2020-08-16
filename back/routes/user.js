@@ -1,11 +1,57 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 
-const { User, Post, Image, Comment } = require('../models');
+const { User, Post, UserImage } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
 const router = express.Router();
+
+// uploads 폴더 생성
+try{
+  fs.accessSync('uploads');
+} catch (error) {
+  console.log('uploads 폴더가 없으므로 생성합니다.');
+  fs.mkdirSync('uploads');
+}
+const upload = multer({
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, 'uploads');
+    },
+    filename(req, file, done) {
+      const ext = path.extname(file.originalname);  // 확장자 추출
+      const basename = path.basename(file.originalname, ext);
+      done(null, basename + '_' + new Date().getTime() + ext);
+    }
+  }),
+  limits: { fileSize: 20 * 1024 * 1024 },  // 20mb
+});
+// 이미지 업로드
+router.post('/image', isLoggedIn, upload.single('image'), async (req, res, next) => { // POST /user/image
+  await User.update({
+    src: req.file.filename
+  }, {
+    where: {
+      id: req.user.id
+    }
+  })
+  res.status(200).json(req.file.filename);
+});
+// 이미지 업로드
+router.delete('/image', isLoggedIn, async (req, res, next) => { // POST /user/image
+  await User.update({
+    src: null
+  }, {
+    where: {
+      id: req.user.id
+    }
+  })
+  res.status(200).send('ok');
+});
 
 router.get('/followers', isLoggedIn, async (req, res, next) => { // GET /user/followers
   try {
@@ -79,7 +125,7 @@ router.get('/', isLoggedIn, async (req, res, next) => {  // GET /user
   }
 });
 // 다른 유저 프로필 정보
-router.get('/:username', isLoggedIn, async (req, res, next) => {  // GET /user/1
+router.get('/:username', async (req, res, next) => {  // GET /user/1
   try {
     const UserProfileInfo = await User.findOne({
       where: { username: req.params.username },
@@ -101,7 +147,7 @@ router.get('/:username', isLoggedIn, async (req, res, next) => {  // GET /user/1
       const data = UserProfileInfo.toJSON();
       data.Posts = data.Posts.length;
       data.Follows = data.Follows.length;
-      data.isFollow = data.Followers.some((id) => id === req.user.id);
+      data.isFollow = data.Followers.some((follower) => follower.id === req.user.id);
       data.Followers = data.Followers.length;
       res.status(200).json(data);
     } else {

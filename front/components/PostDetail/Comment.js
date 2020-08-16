@@ -5,8 +5,9 @@ import { UserOutlined, DeleteFilled } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import Link from 'next/link';
 
-import { UserName, CommentButton, NormalButton } from './style';
+import { NormalButton } from './style';
 import { REMOVE_COMMENT_REQUEST } from '../../reducers/post';
+import { backUrl } from '../../config/config';
 
 const Comment = ({ comment }) => {
   const dispatch = useDispatch();
@@ -20,8 +21,18 @@ const Comment = ({ comment }) => {
   });
   return (
     <li>
-      <Link href={`/profile/${comment.User.username}`}><a><Avatar src={comment.User.src} icon={<UserOutlined />} size={32} /></a></Link>
-      <div className="content"><h3>{comment.User.username}</h3> {comment.content}</div>
+      <Link href={`/profile/${comment.User.username}`}>
+        <a>
+          {
+            comment.User.src
+              ? <Avatar src={`${backUrl}/${comment.User.src}`} size={32} />
+              : <Avatar icon={<UserOutlined />} size={32} />
+          }
+        </a>
+      </Link>
+      <div className="content">
+        <Link href={`/profile/${comment.User.username}`}><a style={{ color: '#222' }}><h3>{comment.User.username}</h3></a></Link> {comment.content}
+      </div>
       {me.id === comment.User.id && (
         <NormalButton className="del" onClick={onRemove}>
           <DeleteFilled />

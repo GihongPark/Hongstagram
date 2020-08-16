@@ -4,7 +4,6 @@ const post = require('./post');
 const comment = require('./comment');
 const image = require('./image');
 const hashtag = require('./hashtag');
-const userImage = require('./userImage');
 
 // 환경변수를 env에 담는다(기본값: 'development')
 const env = process.env.NODE_ENV || 'development';
@@ -20,7 +19,6 @@ db.Post = post;
 db.Comment = comment;
 db.Image = image;
 db.Hashtag = hashtag;
-db.UserImage = userImage;
 
 Object.keys(db).forEach(modelName => {
   db[modelName].init(sequelize);

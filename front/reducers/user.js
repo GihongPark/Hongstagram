@@ -22,6 +22,12 @@ const initialState = {
   unfollowLoading: false, // 언팔로우 시도중
   unfollowDone: false,
   unfollowError: null,
+  uploadProfileImageLoading: false,
+  uploadProfileImageDone: false,
+  uploadProfileImageError: null,
+  removeProfileImageLoading: false,
+  removeProfileImageDone: false,
+  removeProfileImageError: null,
   me: null,
   userInfo: null,
 };
@@ -53,6 +59,14 @@ export const FOLLOW_FAILURE = 'FOLLOW_FAILURE';
 export const UNFOLLOW_REQUEST = 'UNFOLLOW_REQUEST';
 export const UNFOLLOW_SUCCESS = 'UNFOLLOW_SUCCESS';
 export const UNFOLLOW_FAILURE = 'UNFOLLOW_FAILURE';
+
+export const UPLOAD_PROFILE_IMAGE_REQUEST = 'UPLOAD_PROFILE_IMAGE_REQUEST';
+export const UPLOAD_PROFILE_IMAGE_SUCCESS = 'UPLOAD_PROFILE_IMAGE_SUCCESS';
+export const UPLOAD_PROFILE_IMAGE_FAILURE = 'UPLOAD_PROFILE_IMAGE_FAILURE';
+
+export const REMOVE_PROFILE_IMAGE_REQUEST = 'REMOVE_PROFILE_IMAGE_REQUEST';
+export const REMOVE_PROFILE_IMAGE_SUCCESS = 'REMOVE_PROFILE_IMAGE_SUCCESS';
+export const REMOVE_PROFILE_IMAGE_FAILURE = 'REMOVE_PROFILE_IMAGE_FAILURE';
 
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
@@ -137,6 +151,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.followLoading = false;
       draft.me.Follows += 1;
       draft.userInfo.isFollow = true;
+      draft.userInfo.Followers += 1;
       draft.followDone = true;
       break;
     case FOLLOW_FAILURE:
@@ -152,11 +167,50 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.unfollowLoading = false;
       draft.me.Follows -= 1;
       draft.userInfo.isFollow = false;
+      draft.userInfo.Followers -= 1;
       draft.unfollowDone = true;
       break;
     case UNFOLLOW_FAILURE:
       draft.unfollowLoading = false;
       draft.unfollowError = action.error;
+      break;
+    case UPLOAD_PROFILE_IMAGE_REQUEST:
+      draft.uploadProfileImageLoading = true;
+      draft.uploadProfileImageDone = false;
+      draft.uploadProfileImageError = null;
+      draft.removeProfileImageLoading = false;
+      draft.removeProfileImageDone = false;
+      draft.removeProfileImageError = null;
+      break;
+    case UPLOAD_PROFILE_IMAGE_SUCCESS: {
+      draft.me.src = action.data;
+      draft.userInfo.src = action.data;
+      draft.uploadProfileImageLoading = false;
+      draft.uploadProfileImageDone = true;
+      break;
+    }
+    case UPLOAD_PROFILE_IMAGE_FAILURE:
+      draft.uploadProfileImageLoading = false;
+      draft.uploadProfileImageError = action.error;
+      break;
+    case REMOVE_PROFILE_IMAGE_REQUEST:
+      draft.removeProfileImageLoading = true;
+      draft.removeProfileImageDone = false;
+      draft.removeProfileImageError = null;
+      draft.uploadProfileImageLoading = false;
+      draft.uploadProfileImageDone = false;
+      draft.uploadProfileImageError = null;
+      break;
+    case REMOVE_PROFILE_IMAGE_SUCCESS: {
+      draft.me.src = null;
+      draft.userInfo.src = null;
+      draft.removeProfileImageLoading = false;
+      draft.removeProfileImageDone = true;
+      break;
+    }
+    case REMOVE_PROFILE_IMAGE_FAILURE:
+      draft.removeProfileImageLoading = false;
+      draft.removeProfileImageError = action.error;
       break;
     case ADD_POST_TO_ME:
       draft.me.Posts += 1;
