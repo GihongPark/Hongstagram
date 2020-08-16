@@ -1,11 +1,9 @@
 import React, { useState, useCallback } from 'react';
-import { Row, Avatar, Button } from 'antd';
+import { Row, Avatar, Button, Tooltip } from 'antd';
 import {
   HomeOutlined,
   HomeTwoTone,
   UploadOutlined,
-  MessageOutlined,
-  MessageTwoTone,
   CompassOutlined,
   CompassTwoTone,
   HeartOutlined,
@@ -69,33 +67,60 @@ const TopBar = () => {
             </CenterXs>
             <Right xs={12} sm={8}>
               <Menu>
-                <li><Link href="/"><a>{
-                  router.pathname === '/'
-                    ? <HomeTwoTone twoToneColor="#000" />
-                    : <HomeOutlined />
-                }</a></Link></li>
-                <li>
-                  <Button type="text" onClick={showUpload}><UploadOutlined /></Button>
-                  <Upload visible={uploadVisible} setVisible={setUploadVisible} />
-                </li>
-                <li><Link href="/direct"><a>{
-                  router.pathname === '/direct'
-                    ?<MessageTwoTone twoToneColor="#000" />
-                    : <MessageOutlined />
-                }</a></Link></li>
-                <li><Link href="/explore"><a>{
-                  router.pathname === '/explore'
-                    ? <CompassTwoTone twoToneColor="#000" />
-                    : <CompassOutlined />
-                }</a></Link></li>
-                <li><Link href="/active"><a>{
-                  router.pathname === '/active'
-                    ? <HeartTwoTone twoToneColor="#000" />
-                    : <HeartOutlined />
-                }</a></Link></li>
-                <li><Link href={`/profile/${me?.username}`}><a>
-                  <Avatar src={me?.src} icon={<UserOutlined />} size="small" />
-                </a></Link></li>
+                <Tooltip placement="bottom" title="Home">
+                  <li>
+                    <Link href="/">
+                      <a>
+                        {
+                          router.pathname === '/'
+                            ? <HomeTwoTone twoToneColor="#000" />
+                            : <HomeOutlined />
+                        }
+                      </a>
+                    </Link>
+                  </li>
+                </Tooltip>
+                <Tooltip placement="bottom" title="Upload">
+                  <li>
+                    <Button type="text" onClick={showUpload}><UploadOutlined /></Button>
+                    <Upload visible={uploadVisible} setVisible={setUploadVisible} />
+                  </li>
+                </Tooltip>
+                <Tooltip placement="bottom" title="Explore">
+                  <li>
+                    <Link href="/explore">
+                      <a>
+                        {
+                          router.pathname === '/explore'
+                            ? <CompassTwoTone twoToneColor="#000" />
+                            : <CompassOutlined />
+                        }
+                      </a>
+                    </Link>
+                  </li>
+                </Tooltip>
+                <Tooltip placement="bottom" title="Active">
+                  <li>
+                    <Link href="/active">
+                      <a>
+                        {
+                          router.pathname === '/active'
+                            ? <HeartTwoTone twoToneColor="#000" />
+                            : <HeartOutlined />
+                        }
+                      </a>
+                    </Link>
+                  </li>
+                </Tooltip>
+                <Tooltip placement="bottom" title="Profile">
+                  <li>
+                    <Link href={`/profile/${me?.username}`}>
+                      <a>
+                        <Avatar src={me?.src} icon={<UserOutlined />} size="small" />
+                      </a>
+                    </Link>
+                  </li>
+                </Tooltip>
               </Menu>
             </Right>
           </Row>

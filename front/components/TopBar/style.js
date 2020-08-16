@@ -31,7 +31,7 @@ export const Menu = styled.ul`
 
   li {
     float: left;
-    padding-left: 22px;
+    margin-left: 22px;
 
     a, button{
       color: #000;
