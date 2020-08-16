@@ -8,7 +8,7 @@ import axios from 'axios';
 
 import AppLayout from '../../components/AppLayout';
 import PostList from '../../components/PostList';
-import { LOAD_MY_INFO_REQUEST, LOAD_USER_REQUEST, LOG_OUT_REQUEST } from '../../reducers/user';
+import { LOAD_MY_INFO_REQUEST, LOAD_USER_REQUEST, LOG_OUT_REQUEST, FOLLOW_REQUEST, UNFOLLOW_REQUEST } from '../../reducers/user';
 import wrapper from '../../store/configureStore';
 import { UserInfo, ProfileImageButton, ProfileInfo, Global, ListWrapper, SettingButton } from './style';
 import { FlexColumn } from '../../components/AppLayout/style';
@@ -41,6 +41,18 @@ const Profile = () => {
   const onLogOut = useCallback(() => {
     dispatch({
       type: LOG_OUT_REQUEST,
+    });
+  });
+  const onFollow = useCallback(() => {
+    dispatch({
+      type: FOLLOW_REQUEST,
+      data: userInfo.id,
+    });
+  });
+  const onUnFollow = useCallback(() => {
+    dispatch({
+      type: UNFOLLOW_REQUEST,
+      data: userInfo.id,
     });
   });
 
@@ -82,8 +94,8 @@ const Profile = () => {
                           )
                           : (
                             <>
-                              <Button className="lg">메시지 보내기</Button>
-                              <Button type="primary">팔로우</Button>
+                              {/* <Button className="lg">메시지 보내기</Button> */}
+                              {userInfo.isFollow ? <Button onClick={onUnFollow}>언팔로우</Button> : <Button type="primary" onClick={onFollow}>팔로우</Button> }
                             </>
                           )
                       }
