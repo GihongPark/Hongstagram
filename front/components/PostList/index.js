@@ -5,7 +5,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 
 import PostDetail from '../PostDetail';
-import { LOAD_TYPE_POSTS_REQUEST, REMOVE_POSTS, LOAD_POST_REQUEST } from '../../reducers/post';
+import { LOAD_TYPE_POSTS_REQUEST, LOAD_EXPLORE_POSTS_REQUEST, REMOVE_POSTS, LOAD_POST_REQUEST } from '../../reducers/post';
 import PostCard from './PostCard';
 import { Loading } from './style';
 import { Global } from '../PostDetail/style';
@@ -19,13 +19,20 @@ const PostList = ({ type, username }) => {
     dispatch({
       type: REMOVE_POSTS,
     });
-    dispatch({
-      type: LOAD_TYPE_POSTS_REQUEST,
-      data: {
-        type,
-        username,
-      },
-    });
+
+    if (type === 'explore') {
+      dispatch({
+        type: LOAD_EXPLORE_POSTS_REQUEST,
+      });
+    } else {
+      dispatch({
+        type: LOAD_TYPE_POSTS_REQUEST,
+        data: {
+          type,
+          username,
+        },
+      });
+    }
   }, [type]);
 
   useEffect(() => {
@@ -36,14 +43,21 @@ const PostList = ({ type, username }) => {
       ) {
         if (hasMorePosts && !loadPostsLoading) {
           const lastId = mainPosts[mainPosts.length - 1]?.id;
-          dispatch({
-            type: LOAD_TYPE_POSTS_REQUEST,
-            lastId,
-            data: {
-              type,
-              username,
-            },
-          });
+          if (type === 'explore') {
+            dispatch({
+              type: LOAD_EXPLORE_POSTS_REQUEST,
+              lastId,
+            });
+          } else {
+            dispatch({
+              type: LOAD_TYPE_POSTS_REQUEST,
+              lastId,
+              data: {
+                type,
+                username,
+              },
+            });
+          }
         }
       }
     }

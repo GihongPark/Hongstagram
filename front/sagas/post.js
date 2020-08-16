@@ -8,6 +8,9 @@ import {
   LOAD_TYPE_POSTS_REQUEST,
   LOAD_TYPE_POSTS_SUCCESS,
   LOAD_TYPE_POSTS_FAILURE,
+  LOAD_EXPLORE_POSTS_REQUEST,
+  LOAD_EXPLORE_POSTS_SUCCESS,
+  LOAD_EXPLORE_POSTS_FAILURE,
   LOAD_POSTS_REQUEST,
   LOAD_POSTS_SUCCESS,
   LOAD_POSTS_FAILURE,
@@ -38,9 +41,6 @@ import {
   REMOVE_LIKE_REQUEST,
   REMOVE_LIKE_SUCCESS,
   REMOVE_LIKE_FAILURE,
-  LOAD_BOOKMARK_REQUEST,
-  LOAD_BOOKMARK_SUCCESS,
-  LOAD_BOOKMARK_FAILURE,
   ADD_BOOKMARK_REQUEST,
   ADD_BOOKMARK_SUCCESS,
   ADD_BOOKMARK_FAILURE,
@@ -83,6 +83,25 @@ function* loadTypePosts(action) {
     console.error(err);
     yield put({
       type: LOAD_TYPE_POSTS_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function loadExplorePostsAPI(lastId) {
+  return axios.get(`/posts/explore?lastId=${lastId || 0}`);
+}
+function* loadExplorePosts(action) {
+  try {
+    const result = yield call(loadExplorePostsAPI, action.lastId);
+    yield put({
+      type: LOAD_EXPLORE_POSTS_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_EXPLORE_POSTS_FAILURE,
       error: err.response.data,
     });
   }
@@ -332,6 +351,10 @@ function* watchLoadTypePosts() {
   yield throttle(5000, LOAD_TYPE_POSTS_REQUEST, loadTypePosts);
 }
 
+function* watchLoadExplorePosts() {
+  yield throttle(5000, LOAD_EXPLORE_POSTS_REQUEST, loadExplorePosts);
+}
+
 function* watchLoadPosts() {
   yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts);
 }
@@ -384,6 +407,7 @@ export default function* postSaga() {
   yield all([
     fork(watchLoadPost),
     fork(watchLoadTypePosts),
+    fork(watchLoadExplorePosts),
     fork(watchLoadPosts),
     fork(watchAddPost),
     fork(watchRemovePost),
