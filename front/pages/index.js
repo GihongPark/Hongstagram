@@ -1,19 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Router from 'next/router';
 import { END } from 'redux-saga';
 import axios from 'axios';
 
 import AppLayout from '../components/AppLayout';
-import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
-import wrapper from '../store/configureStore';
-import { LOAD_POSTS_REQUEST } from '../reducers/post';
 import PostDetail from '../components/PostDetail';
+import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
+import { LOAD_POSTS_REQUEST } from '../reducers/post';
+import wrapper from '../store/configureStore';
+import { Empty } from 'antd';
+import { Loading } from '../components/PostList/style';
+import { LoadingOutlined } from '@ant-design/icons';
 
 const Home = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
-  const { mainPosts, loadPostsDone } = useSelector((state) => state.post);
+  const {
+    mainPosts, hasMorePosts, loadPostsLoading, loadPostsDone,
+  } = useSelector((state) => state.post);
+  const style = useMemo(() => ({ width: '614px' }));
 
   useEffect(() => {
     if (!me || !me.id) {
@@ -21,12 +27,41 @@ const Home = () => {
     }
   }, [me, me?.id]);
 
+  useEffect(() => {
+    function onScroll() {
+      if (
+        window.scrollY + document.documentElement.clientHeight
+        > document.documentElement.scrollHeight - 1600
+      ) {
+        if (hasMorePosts && !loadPostsLoading) {
+          const lastId = mainPosts[mainPosts.length - 1]?.id;
+          dispatch({
+            type: LOAD_POSTS_REQUEST,
+            lastId,
+          });
+        }
+      }
+    }
+    window.addEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, [mainPosts, hasMorePosts, loadPostsLoading]);
+
   return (
     <AppLayout>
-      <div style={{ width: '614px' }}>
+      <div style={style}>
         {mainPosts.map((post) => (
-          <PostDetail post={post} loading={loadPostsDone} mode="list" />
+          <PostDetail key={post.id} post={post} mode="list" />
         ))}
+        {mainPosts.length === 0 && (
+          <Empty style={{ marginTop: '100px' }} description="게시물을 올려주세요" />
+        )}
+        {hasMorePosts && (
+          <Loading>
+            <LoadingOutlined />
+          </Loading>
+        )}
       </div>
     </AppLayout>
   );

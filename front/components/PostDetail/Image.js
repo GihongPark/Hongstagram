@@ -7,35 +7,28 @@ import { Image } from './style';
 import SlickGlobal from '../../style/slick';
 import { backUrl } from '../../config/config';
 
-const ImageComponent = ({ images, done, mode }) => (
+const ImageComponent = ({ images, mode }) => (
   <Image className={mode}>
-    {
-      done
-        ? (
-          <>
-            <SlickGlobal />
-            <Slick
-              infinite={false}
-              initialSlide={0}
-              slidesToShow={1}
-              slidesToScroll={1}
-              adaptiveHeight
-            >
-              {
-                images.map((image) => (
-                  <div key={image.src}>
-                    <img
-                      src={`${backUrl}/${image.src}`}
-                      style={{ width: '100%' }}
-                      alt={image.src}
-                    />
-                  </div>
-                ))
-              }
-            </Slick>
-          </>
-        ) : <Empty />
-    }
+    <SlickGlobal />
+    <Slick
+      infinite={false}
+      initialSlide={0}
+      slidesToShow={1}
+      slidesToScroll={1}
+      adaptiveHeight
+    >
+      {
+        images.map((image) => (
+          <div key={image.src}>
+            <img
+              src={`${backUrl}/${image.src}`}
+              style={{ width: '100%' }}
+              alt={image.src}
+            />
+          </div>
+        ))
+      }
+    </Slick>
   </Image>
 );
 
@@ -47,7 +40,6 @@ ImageComponent.propTypes = {
     updateAt: PropTypes.string,
     PostId: PropTypes.number,
   })).isRequired,
-  done: PropTypes.bool.isRequired,
   mode: PropTypes.string.isRequired,
 };
 

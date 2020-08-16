@@ -7,30 +7,23 @@ import Link from 'next/link';
 
 import { Header, UserName, NormalButton } from './style';
 
-const HeaderComponent = ({ user, done, mode }) => {
+const HeaderComponent = ({ user, mode }) => {
   const { me } = useSelector((state) => state.user);
 
   return (
     <Header className={mode}>
-      {
-        done
-          ? (
-            <>
-              <Link href={`/profile/${user.username}`}><a><Avatar src={user.src} icon={<UserOutlined />} size={32} /></a></Link>
-              <UserName>
-                <span>{user.username}</span>
-                {
-                  user.id
-                    && user.id === me.id
-                    ? null
-                    : (
-                      <span> • <NormalButton type="text">팔로잉</NormalButton></span>
-                    )
-                }
-              </UserName>
-            </>
-          ) : <Skeleton avatar active paragraph={{ rows: 0 }} />
-      }
+      <Link href={`/profile/${user.username}`}><a><Avatar src={user.src} icon={<UserOutlined />} size={32} /></a></Link>
+      <UserName>
+        <span>{user.username}</span>
+        {
+          user.id
+            && user.id === me.id
+            ? null
+            : (
+              <span> • <NormalButton type="text">팔로잉</NormalButton></span>
+            )
+        }
+      </UserName>
     </Header>
   );
 };
@@ -44,7 +37,6 @@ HeaderComponent.propTypes = {
       PropTypes.oneOf([null]),
     ]),
   }).isRequired,
-  done: PropTypes.bool.isRequired,
   mode: PropTypes.string.isRequired,
 };
 

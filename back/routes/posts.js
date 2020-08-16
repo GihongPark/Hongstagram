@@ -18,7 +18,7 @@ router.get('/', isLoggedIn, async (req, res, next) => {  // GET /posts
     }
     const posts = await Post.findAll({
       where,
-      limit: 12,
+      limit: 8,
       order: [
         ['createdAt', 'DESC'],
         [Comment, 'createdAt', 'DESC'],

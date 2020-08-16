@@ -136,11 +136,16 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.loadPostsError = null;
       break;
     case LOAD_TYPE_POSTS_SUCCESS:
-    case LOAD_POSTS_SUCCESS:
       draft.loadPostsLoading = false;
       draft.loadPostsDone = true;
       draft.mainPosts = draft.mainPosts.concat(action.data);
       draft.hasMorePosts = action.data.length === 12;
+      break;
+    case LOAD_POSTS_SUCCESS:
+      draft.loadPostsLoading = false;
+      draft.loadPostsDone = true;
+      draft.mainPosts = draft.mainPosts.concat(action.data);
+      draft.hasMorePosts = action.data.length === 8;
       break;
     case LOAD_TYPE_POSTS_FAILURE:
     case LOAD_POSTS_FAILURE:

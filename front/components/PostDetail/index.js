@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useSelector, useDispatch } from 'react-redux';
 
-import { Global, PostWrapper } from './style';
+import { PostWrapper } from './style';
 import Header from './Header';
 import Image from './Image';
 import Contents from './Contents';
@@ -12,18 +11,17 @@ import Contents from './Contents';
 //   post
 //   modal
 // }
-const PostDetail = ({ post, loading, mode }) => {
-  if (!loading) {
+const PostDetail = ({ post, mode }) => {
+  if (!post) {
     return null;
   }
   return (
     <>
       <PostWrapper className={`wrapper ${mode}`}>
-        <Header user={post?.User} done={loading} mode={mode} />
-        <Image images={post?.Images} done={loading} mode={mode} />
+        <Header user={post?.User} mode={mode} />
+        <Image images={post?.Images} mode={mode} />
         <Contents
           post={post}
-          done={loading}
           mode={mode}
         />
       </PostWrapper>
@@ -33,7 +31,6 @@ const PostDetail = ({ post, loading, mode }) => {
 
 PostDetail.propTypes = {
   post: PropTypes.object.isRequired,
-  loading: PropTypes.bool.isRequired,
   mode: PropTypes.string.isRequired,
 };
 

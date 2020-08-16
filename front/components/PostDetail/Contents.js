@@ -11,7 +11,7 @@ import Comment from './Comment';
 import { ADD_COMMENT_REQUEST, ADD_LIKE_REQUEST, REMOVE_LIKE_REQUEST, REMOVE_BOOKMARK_REQUEST, ADD_BOOKMARK_REQUEST } from '../../reducers/post';
 import PostDetail from './';
 
-const Contents = ({ post, done, mode }) => {
+const Contents = ({ post, mode }) => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
   const { addCommentDone } = useSelector((state) => state.post);
@@ -99,7 +99,7 @@ const Contents = ({ post, done, mode }) => {
         <Like>
           <NormalButton onClick={showLike}>
             <span>좋아요 </span>
-            <span>{ done ? post.Likers.length : 0 }</span>
+            <span>{ post.Likers.length }</span>
             <span> 개</span>
           </NormalButton>
         </Like>
@@ -173,7 +173,6 @@ const Contents = ({ post, done, mode }) => {
 
 Contents.propTypes = {
   post: PropTypes.object.isRequired,
-  done: PropTypes.bool.isRequired,
   mode: PropTypes.string.isRequired,
 };
 

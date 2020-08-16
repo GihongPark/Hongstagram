@@ -83,7 +83,7 @@ const PostList = ({ type, username }) => {
           bodyStyle={{ padding: '0' }}
         >
           <Global />
-          <PostDetail post={singlePost} loading={loadPostDone} mode="post" />
+          {loadPostDone && (<PostDetail post={singlePost} mode="post" />)}
         </Modal>
       </Row>
       {hasMorePosts && (

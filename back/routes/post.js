@@ -77,6 +77,10 @@ router.post('/', isLoggedIn, upload.none(), async (req, res, next) => {  // POST
         model: User, // 좋아요 누른 사람
         as: 'Likers',
         attributes: ['id'],
+      }, {
+        model: User,
+        as: 'Bookmarkers',
+        attributes: ['id'],
       }]
     })
     res.status(201).json(fullPost);
