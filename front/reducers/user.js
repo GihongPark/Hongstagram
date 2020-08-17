@@ -22,10 +22,10 @@ const initialState = {
   unfollowLoading: false, // 언팔로우 시도중
   unfollowDone: false,
   unfollowError: null,
-  uploadProfileImageLoading: false,
+  uploadProfileImageLoading: false, // 프로필 이미지 업로드 시도중
   uploadProfileImageDone: false,
   uploadProfileImageError: null,
-  removeProfileImageLoading: false,
+  removeProfileImageLoading: false, // 프로필 이미지 삭제 시도중
   removeProfileImageDone: false,
   removeProfileImageError: null,
   me: null,
@@ -67,6 +67,10 @@ export const UPLOAD_PROFILE_IMAGE_FAILURE = 'UPLOAD_PROFILE_IMAGE_FAILURE';
 export const REMOVE_PROFILE_IMAGE_REQUEST = 'REMOVE_PROFILE_IMAGE_REQUEST';
 export const REMOVE_PROFILE_IMAGE_SUCCESS = 'REMOVE_PROFILE_IMAGE_SUCCESS';
 export const REMOVE_PROFILE_IMAGE_FAILURE = 'REMOVE_PROFILE_IMAGE_FAILURE';
+
+export const AUTO_COMPLETE_REQUEST = 'AUTOCOMPLETE_REQUEST';
+export const AUTO_COMPLETE_SUCCESS = 'AUTOCOMPLETE_SUCCESS';
+export const AUTO_COMPLETE_FAILURE = 'AUTOCOMPLETE_FAILURE';
 
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';

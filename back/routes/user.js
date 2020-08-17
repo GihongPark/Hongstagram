@@ -4,8 +4,9 @@ const passport = require('passport');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const { Op } = require('sequelize');
 
-const { User, Post, UserImage } = require('../models');
+const { User, Post } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 
 const router = express.Router();
@@ -153,6 +154,21 @@ router.get('/:username', async (req, res, next) => {  // GET /user/1
     } else {
       res.status(403).send('존재하지 않는 사용자입니다');
     }
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+// 유저리스트
+router.get('/:username/search', async (req, res, next) => {  // GET /user/1/search
+  try {
+    const users = await User.findAll({
+      where: {username: {[Op.like]: `%${req.params.username}%`}},
+      attributes: ['username'],
+    })
+
+    res.status(200).json(users);
   } catch (error) {
     console.error(error);
     next(error);

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Row, Avatar, Button, Tooltip } from 'antd';
 import {
   HomeOutlined,
@@ -18,30 +18,39 @@ import { Block, LayoutWrapper, Layout, Logo, AutoSearch, Menu, CenterXs } from '
 import { Left, Right } from '../AppLayout/style';
 import Upload from '../Upload';
 import { backUrl } from '../../config/config';
+import { AUTO_COMPLETE_REQUEST } from '../../reducers/search';
 
 const TopBar = () => {
   const dispatch = useDispatch();
   const { me } = useSelector((state) => state.user);
+  const { autoComplete, autoCompleteLoading } = useSelector((state) => state.search);
   const router = useRouter();
 
   const [options, setOptions] = useState([]);
   const [uploadVisible, setUploadVisible] = useState(false);
 
-  const filterOption = useCallback((inputValue, option) => option.value
-    .toUpperCase().indexOf(inputValue.toUpperCase()) !== -1);
+  useEffect(() => {
+    setOptions(autoComplete);
+  }, [autoComplete]);
+
+  // const filterOption = useCallback((inputValue, option) => option.value
+  //   .toUpperCase().indexOf(inputValue.toUpperCase()) !== -1);
 
   const onSearch = (searchText) => {
-    setOptions(
-      !searchText ? [] : [
-        { value: searchText },
-      ],
-    );
-    // TODO: 자동완성 api 넣기
+    dispatch({
+      type: AUTO_COMPLETE_REQUEST,
+      data: searchText,
+    });
   };
 
   const onSelect = (data) => {
     console.log('onSelect: ', data);
     // TODO: 해당 유저 || 태그 이동
+    if (data[0] === '#') {
+      router.push(`/tag/${data.slice(1)}`);
+    } else {
+      router.push(`/profile/${data}`);
+    }
   };
 
   const showUpload = () => setUploadVisible(true);
@@ -61,9 +70,10 @@ const TopBar = () => {
               <AutoSearch
                 options={options}
                 placeholder="검색"
-                filterOption={filterOption}
+                // filterOption={filterOption}
                 onSelect={onSelect}
                 onSearch={onSearch}
+                loading={autoCompleteLoading}
               />
             </CenterXs>
             <Right xs={12} sm={8}>

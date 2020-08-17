@@ -1,7 +1,7 @@
 const express = require('express');
 const { Op } = require('sequelize');
 
-const { User, Post, Image, Comment } = require('../models');
+const { User, Post, Image, Comment, Hashtag } = require('../models');
 
 const router = express.Router();
 
@@ -45,6 +45,20 @@ router.get('/:username', async (req, res, next) => {  // GET /tag/1
     } else {
       res.status(403).send('존재하지 않는 사용자입니다');
     }
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
+router.get('/:tag/search', async (req, res, next) => {  // GET /tag/1/search
+  try {
+    const users = await Hashtag.findAll({
+      where: {name: {[Op.like]: `%${req.params.tag}%`}},
+      attributes: ['name'],
+    })
+
+    res.status(200).json(users);
   } catch (error) {
     console.error(error);
     next(error);

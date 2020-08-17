@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 
 import user from './user';
 import post from './post';
+import search from './search';
 
 const rootReducer = (state, action) => {
   switch (action.type) {
@@ -13,6 +14,7 @@ const rootReducer = (state, action) => {
       const combinedReducer = combineReducers({
         user,
         post,
+        search,
       });
       return combinedReducer(state, action);
     }
