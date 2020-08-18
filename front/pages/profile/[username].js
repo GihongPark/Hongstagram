@@ -8,6 +8,7 @@ import axios from 'axios';
 
 import AppLayout from '../../components/AppLayout';
 import PostList from '../../components/PostList';
+import UserList from '../../components/UserList';
 import { LOAD_MY_INFO_REQUEST, LOAD_USER_REQUEST, LOG_OUT_REQUEST, FOLLOW_REQUEST, UNFOLLOW_REQUEST, UPLOAD_PROFILE_IMAGE_REQUEST, REMOVE_PROFILE_IMAGE_REQUEST } from '../../reducers/user';
 import wrapper from '../../store/configureStore';
 import { UserInfo, ProfileImageButton, ProfileImageDiv, ProfileInfo, Global, ListWrapper, SettingButton, ProfileImageHeader, ProfileImageAction } from './style';
@@ -25,7 +26,9 @@ const Profile = () => {
     me, userInfo, loadUserError, logOutLoading, uploadProfileImageDone, removeProfileImageDone,
   } = useSelector((state) => state.user);
   const [type, setType] = useState('posts');
-  const [visible, setVisible] = useState(false);
+  const [profileImageVisible, setProfileImageVisible] = useState(false);
+  const [userListVisible, setUserListVisible] = useState(false);
+  const [userListType, setUserListType] = useState('');
   const imageInput = useRef();
 
   useEffect(() => {
@@ -41,7 +44,7 @@ const Profile = () => {
   }, [loadUserError]);
   useEffect(() => {
     if (uploadProfileImageDone || removeProfileImageDone) {
-      setVisible(false);
+      setProfileImageVisible(false);
     }
   }, [uploadProfileImageDone, removeProfileImageDone]);
 
@@ -68,10 +71,10 @@ const Profile = () => {
     }
   });
   const onPopupProfileImage = useCallback(() => {
-    setVisible(true);
+    setProfileImageVisible(true);
   });
   const onCancel = useCallback(() => {
-    setVisible(false);
+    setProfileImageVisible(false);
   });
 
   const onLogOut = useCallback(() => {
@@ -90,6 +93,14 @@ const Profile = () => {
       type: UNFOLLOW_REQUEST,
       data: userInfo.id,
     });
+  });
+  const showUserList = useCallback((param) => () => {
+    setUserListVisible(true);
+    setUserListType(param);
+  });
+  const hideUserList = useCallback(() => {
+    setUserListVisible(false);
+    setUserListType('');
   });
 
   const onChangeTab = useCallback((key) => {
@@ -125,7 +136,7 @@ const Profile = () => {
                       </Row>
                     </ProfileImageButton>
                     <Modal
-                      visible={visible}
+                      visible={profileImageVisible}
                       onCancel={onCancel}
                       footer={null}
                       width="400px"
@@ -199,8 +210,8 @@ const Profile = () => {
                     <Col xs={0} lg={24}>
                       <ul>
                         <li>게시물 <span>{userInfo?.Posts}</span></li>
-                        <li><Button type="text">팔로워 <span>{userInfo?.Followers}</span></Button></li>
-                        <li><Button type="text">팔로우 <span>{userInfo?.Follows}</span></Button></li>
+                        <li><Button type="text" onClick={showUserList('follower')}>팔로워 {userInfo?.Followers}</Button></li>
+                        <li><Button type="text" onClick={showUserList('follow')}>팔로우 {userInfo?.Follows}</Button></li>
                       </ul>
                     </Col>
                     <Col xs={0} lg={24}>
@@ -217,18 +228,19 @@ const Profile = () => {
               <strong>{userInfo?.Posts}</strong>
             </Col>
             <Col xs={8} lg={0}>
-              <Button type="text">
+              <Button type="text" onClick={showUserList('follower')}>
                 <div>팔로워</div>
                 <strong>{userInfo?.Followers}</strong>
               </Button>
             </Col>
             <Col xs={8} lg={0}>
-              <Button type="text">
+              <Button type="text" onClick={showUserList('follow')}>
                 <div>팔로우</div>
                 <strong>{userInfo?.Follows}</strong>
               </Button>
             </Col>
           </ListWrapper>
+          <UserList type={userListType} paramData={username} visible={userListVisible} onCancel={hideUserList} />
         </UserInfo>
         <div>
           <Tabs defaultActiveKey="1" tabBarGutter={52} onChange={onChangeTab} centered>

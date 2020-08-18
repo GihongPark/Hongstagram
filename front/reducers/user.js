@@ -7,6 +7,9 @@ const initialState = {
   loadUserLoading: false, // 유저 정보 가져오기 시도중
   loadUserDone: false,
   loadUserError: null,
+  loadUserListLoading: false, // 유저 정보 가져오기 시도중
+  loadUserListDone: false,
+  loadUserListError: null,
   logInLoading: false, // 로그인 시도중
   logInDone: false,
   logInError: null,
@@ -30,6 +33,7 @@ const initialState = {
   removeProfileImageError: null,
   me: null,
   userInfo: null,
+  userList: [],
 };
 
 export const LOAD_MY_INFO_REQUEST = 'LOAD_MY_INFO_REQUEST';
@@ -39,6 +43,10 @@ export const LOAD_MY_INFO_FAILURE = 'LOAD_MY_INFO_FAILURE';
 export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
 export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
 export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
+
+export const LOAD_USER_LIST_REQUEST = 'LOAD_USER_LIST_REQUEST';
+export const LOAD_USER_LIST_SUCCESS = 'LOAD_USER_LIST_SUCCESS';
+export const LOAD_USER_LIST_FAILURE = 'LOAD_USER_LIST_FAILURE';
 
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
 export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
@@ -104,6 +112,20 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case LOAD_USER_FAILURE:
       draft.loadUserLoading = false;
       draft.loadUserError = action.error;
+      break;
+    case LOAD_USER_LIST_REQUEST:
+      draft.loadUserListLoading = true;
+      draft.loadUserListError = null;
+      draft.loadUserListDone = false;
+      break;
+    case LOAD_USER_LIST_SUCCESS:
+      draft.loadUserListLoading = false;
+      draft.userList = action.data;
+      draft.loadUserListDone = true;
+      break;
+    case LOAD_USER_LIST_FAILURE:
+      draft.loadUserListLoading = false;
+      draft.loadUserListError = action.error;
       break;
     case LOG_IN_REQUEST:
       draft.logInLoading = true;

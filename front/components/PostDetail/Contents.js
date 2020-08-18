@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { Global, NormalButton, Content, Action, List, Like, CommentList, CommentInput, CommentButton } from './style';
 import useInput from '../../hooks/useInput';
 import PostContent from './PostContent';
+import UserList from '../UserList';
 import Comment from './Comment';
 import { ADD_COMMENT_REQUEST, ADD_LIKE_REQUEST, REMOVE_LIKE_REQUEST, REMOVE_BOOKMARK_REQUEST, ADD_BOOKMARK_REQUEST } from '../../reducers/post';
 import PostDetail from './';
@@ -21,6 +22,8 @@ const Contents = ({ post, mode }) => {
   const commentInput = useRef();
   const [style, setStyle] = useState({});
   const [visible, setVisible] = useState(false);
+  const [userListVisible, setUserListVisible] = useState(false);
+  const [userListType, setUserListType] = useState('');
 
   const isLiked = post.Likers.find((v) => v.id === me.id);
   const isBookmarked = post.Bookmarkers.find((v) => v.id === me.id);
@@ -72,9 +75,16 @@ const Contents = ({ post, mode }) => {
       });
     }
   });
+
   const showLike = useCallback(() => {
-    console.log('like');
+    setUserListVisible(true);
+    setUserListType('like');
   });
+  const hideLike = useCallback(() => {
+    setUserListVisible(false);
+    setUserListType('');
+  });
+
   const showModal = useCallback(() => {
     setVisible(true);
   });
@@ -104,6 +114,7 @@ const Contents = ({ post, mode }) => {
             <span>{ post.Likers.length }</span>
             <span> 개</span>
           </NormalButton>
+          <UserList type={userListType} paramData={post.id} visible={userListVisible} onCancel={hideLike} />
         </Like>
       </Action>
       <CommentList className={mode}>

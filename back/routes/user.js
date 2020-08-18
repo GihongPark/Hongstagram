@@ -54,15 +54,14 @@ router.delete('/image', isLoggedIn, async (req, res, next) => { // POST /user/im
   res.status(200).send('ok');
 });
 
-router.get('/followers', isLoggedIn, async (req, res, next) => { // GET /user/followers
+router.get('/:username/followers', isLoggedIn, async (req, res, next) => { // GET /user/followers
   try {
-    const user = await User.findOne({ where: { id: req.user.id }});
+    const user = await User.findOne({ where: { id: req.params.username }});
     if (!user) {
       res.status(403).send('존재하지 않는 사용자입니다');
     }
     const followers = await user.getFollowers({
-      attributes: ['id', 'username', 'name'],
-      limit: parseInt(req.query.limit, 10),
+      attributes: ['id', 'username', 'name', 'src'],
     });
     res.status(200).json(followers);
   } catch (error) {
@@ -71,15 +70,15 @@ router.get('/followers', isLoggedIn, async (req, res, next) => { // GET /user/fo
   }
 });
 
-router.get('/follows', isLoggedIn, async (req, res, next) => { // GET /user/follows
+router.get('/:username/follows', async (req, res, next) => { // GET /user/1/follows
   try {
-    const user = await User.findOne({ where: { id: req.user.id }});
+    const user = await User.findOne({ where: { id: req.params.username }});
     if (!user) {
       res.status(403).send('존재하지 않는 사용자입니다');
     }
+    console.log(req.query);
     const follows = await user.getFollows({
-      attributes: ['id', 'username', 'name'],
-      limit: parseInt(req.query.limit, 10),
+      attributes: ['id', 'username', 'name', 'src'],
     });
     res.status(200).json(follows);
   } catch (error) {
@@ -126,7 +125,7 @@ router.get('/', isLoggedIn, async (req, res, next) => {  // GET /user
   }
 });
 // 다른 유저 프로필 정보
-router.get('/:username', async (req, res, next) => {  // GET /user/1
+router.get('/:username', isLoggedIn, async (req, res, next) => {  // GET /user/1
   try {
     const UserProfileInfo = await User.findOne({
       where: { username: req.params.username },
@@ -161,7 +160,7 @@ router.get('/:username', async (req, res, next) => {  // GET /user/1
 });
 
 // 유저리스트
-router.get('/:username/search', async (req, res, next) => {  // GET /user/1/search
+router.get('/:username/search', isLoggedIn, async (req, res, next) => {  // GET /user/1/search
   try {
     const users = await User.findAll({
       where: {username: {[Op.like]: `%${req.params.username}%`}},

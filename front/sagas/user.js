@@ -1,4 +1,4 @@
-import { all, fork, takeLatest, put, call, throttle } from 'redux-saga/effects';
+import { all, fork, takeLatest, put, call } from 'redux-saga/effects';
 import axios from 'axios';
 
 import {
@@ -8,6 +8,9 @@ import {
   LOAD_USER_REQUEST,
   LOAD_USER_SUCCESS,
   LOAD_USER_FAILURE,
+  LOAD_USER_LIST_REQUEST,
+  LOAD_USER_LIST_SUCCESS,
+  LOAD_USER_LIST_FAILURE,
   LOG_IN_FAILURE,
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
@@ -23,9 +26,6 @@ import {
   UNFOLLOW_FAILURE,
   UNFOLLOW_REQUEST,
   UNFOLLOW_SUCCESS,
-  AUTO_COMPLETE_FAILURE,
-  AUTO_COMPLETE_REQUEST,
-  AUTO_COMPLETE_SUCCESS,
   UPLOAD_PROFILE_IMAGE_REQUEST,
   UPLOAD_PROFILE_IMAGE_SUCCESS,
   UPLOAD_PROFILE_IMAGE_FAILURE,
@@ -68,6 +68,34 @@ function* loadUser(action) {
     console.error(err);
     yield put({
       type: LOAD_USER_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function loadUserListAPI({ type, paramData }, lastId) {
+  if (type === 'follow') {
+    return axios.get(`/user/${paramData}/follows?lastId=${lastId || 0}`);
+  }
+  if (type === 'follower') {
+    return axios.get(`/user/${paramData}/followers?lastId=${lastId || 0}`);
+  }
+  if (type === 'like') {
+    return axios.get(`/post/${paramData}/likes?lastId=${lastId || 0}`);
+  }
+  return new Error('존재하지 않는 데이터입니다.');
+}
+function* loadUserList(action) {
+  try {
+    const result = yield call(loadUserListAPI, action.data, action.lastId);
+    yield put({
+      type: LOAD_USER_LIST_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_USER_LIST_FAILURE,
       error: err.response.data,
     });
   }
@@ -220,6 +248,10 @@ function* watchLoadUser() {
   yield takeLatest(LOAD_USER_REQUEST, loadUser);
 }
 
+function* watchLoadUserList() {
+  yield takeLatest(LOAD_USER_LIST_REQUEST, loadUserList);
+}
+
 function* watchLogIn() {
   yield takeLatest(LOG_IN_REQUEST, logIn);
 }
@@ -252,6 +284,7 @@ export default function* userSaga() {
   yield all([
     fork(watchLoadMyInfo),
     fork(watchLoadUser),
+    fork(watchLoadUserList),
     fork(watchLogIn),
     fork(watchLogOut),
     fork(watchSignUp),

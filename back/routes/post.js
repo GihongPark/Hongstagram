@@ -94,8 +94,24 @@ router.post('/images', isLoggedIn, upload.array('image'), (req, res, next) => { 
   res.json(req.files.map((v) => v.filename));
 });
 
+router.get('/:postId/likes', isLoggedIn, async (req, res, next) => { // GET /1/likes
+  try{
+    const post = await Post.findOne({ where: { id: req.params.postId } });
+    if (!post) {
+      return res.status(403).send('존재하지 않는 게시글입니다.');
+    }
+    const likes = await post.getLikers({
+      attributes: ['id', 'username', 'name', 'src'],
+    });
+    return res.status(200).json(likes);
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+});
+
 // 특정 포스트 가져오기
-router.get('/:postId', async (req, res, next) => { // GET /post/1
+router.get('/:postId', isLoggedIn, async (req, res, next) => { // GET /post/1
   try {
     const post = await Post.findOne({
       where: { id: req.params.postId },
