@@ -5,12 +5,12 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 
 import PostDetail from '../PostDetail';
-import { LOAD_TYPE_POSTS_REQUEST, LOAD_EXPLORE_POSTS_REQUEST, REMOVE_POSTS, LOAD_POST_REQUEST } from '../../reducers/post';
+import { LOAD_TYPE_POSTS_REQUEST, LOAD_EXPLORE_POSTS_REQUEST, LOAD_HASHTAG_POSTS_REQUEST, REMOVE_POSTS, LOAD_POST_REQUEST } from '../../reducers/post';
 import PostCard from './PostCard';
 import { Loading } from './style';
 import { Global } from '../PostDetail/style';
 
-const PostList = ({ type, username }) => {
+const PostList = ({ type, paramData }) => {
   const dispatch = useDispatch();
   const { mainPosts, hasMorePosts, loadPostsLoading, loadPostDone, singlePost } = useSelector((state) => state.post);
   const [visible, setVisible] = useState(false);
@@ -24,12 +24,17 @@ const PostList = ({ type, username }) => {
       dispatch({
         type: LOAD_EXPLORE_POSTS_REQUEST,
       });
+    } else if (type === 'hashtag') {
+      dispatch({
+        type: LOAD_HASHTAG_POSTS_REQUEST,
+        data: paramData,
+      });
     } else {
       dispatch({
         type: LOAD_TYPE_POSTS_REQUEST,
         data: {
           type,
-          username,
+          username: paramData,
         },
       });
     }
@@ -48,13 +53,18 @@ const PostList = ({ type, username }) => {
               type: LOAD_EXPLORE_POSTS_REQUEST,
               lastId,
             });
+          } else if (type === 'hashtag') {
+            dispatch({
+              type: LOAD_HASHTAG_POSTS_REQUEST,
+              lastId,
+            });
           } else {
             dispatch({
               type: LOAD_TYPE_POSTS_REQUEST,
               lastId,
               data: {
                 type,
-                username,
+                username: paramData,
               },
             });
           }
@@ -111,7 +121,7 @@ const PostList = ({ type, username }) => {
 
 PostList.propTypes = {
   type: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired,
+  paramData: PropTypes.string.isRequired,
 };
 
 export default PostList;

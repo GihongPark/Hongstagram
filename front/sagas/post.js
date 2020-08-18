@@ -11,6 +11,9 @@ import {
   LOAD_EXPLORE_POSTS_REQUEST,
   LOAD_EXPLORE_POSTS_SUCCESS,
   LOAD_EXPLORE_POSTS_FAILURE,
+  LOAD_HASHTAG_POSTS_REQUEST,
+  LOAD_HASHTAG_POSTS_SUCCESS,
+  LOAD_HASHTAG_POSTS_FAILURE,
   LOAD_POSTS_REQUEST,
   LOAD_POSTS_SUCCESS,
   LOAD_POSTS_FAILURE,
@@ -102,6 +105,25 @@ function* loadExplorePosts(action) {
     console.error(err);
     yield put({
       type: LOAD_EXPLORE_POSTS_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function loadHashtagPostsAPI(data, lastId) {
+  return axios.get(`/tag/${data}/posts?lastId=${lastId || 0}`);
+}
+function* loadHashtagPosts(action) {
+  try {
+    const result = yield call(loadHashtagPostsAPI, action.data, action.lastId);
+    yield put({
+      type: LOAD_HASHTAG_POSTS_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: LOAD_HASHTAG_POSTS_FAILURE,
       error: err.response.data,
     });
   }
@@ -355,6 +377,10 @@ function* watchLoadExplorePosts() {
   yield throttle(5000, LOAD_EXPLORE_POSTS_REQUEST, loadExplorePosts);
 }
 
+function* watchLoadHashtagPosts() {
+  yield throttle(5000, LOAD_HASHTAG_POSTS_REQUEST, loadHashtagPosts);
+}
+
 function* watchLoadPosts() {
   yield throttle(5000, LOAD_POSTS_REQUEST, loadPosts);
 }
@@ -408,6 +434,7 @@ export default function* postSaga() {
     fork(watchLoadPost),
     fork(watchLoadTypePosts),
     fork(watchLoadExplorePosts),
+    fork(watchLoadHashtagPosts),
     fork(watchLoadPosts),
     fork(watchAddPost),
     fork(watchRemovePost),

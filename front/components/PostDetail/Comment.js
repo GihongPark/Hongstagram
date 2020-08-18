@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { NormalButton } from './style';
 import { REMOVE_COMMENT_REQUEST } from '../../reducers/post';
 import { backUrl } from '../../config/config';
+import PostContent from './PostContent';
 
 const Comment = ({ comment }) => {
   const dispatch = useDispatch();
@@ -31,7 +32,8 @@ const Comment = ({ comment }) => {
         </a>
       </Link>
       <div className="content">
-        <Link href={`/profile/${comment.User.username}`}><a style={{ color: '#222' }}><h3>{comment.User.username}</h3></a></Link> {comment.content}
+        <Link href={`/profile/${comment.User.username}`}><a style={{ color: '#222' }}><h3>{comment.User.username}</h3></a></Link>
+        <PostContent postData={comment.content} />
       </div>
       {me.id === comment.User.id && (
         <NormalButton className="del" onClick={onRemove}>

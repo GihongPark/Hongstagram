@@ -7,6 +7,7 @@ import Link from 'next/link';
 
 import { Global, NormalButton, Content, Action, List, Like, CommentList, CommentInput, CommentButton } from './style';
 import useInput from '../../hooks/useInput';
+import PostContent from './PostContent';
 import Comment from './Comment';
 import { ADD_COMMENT_REQUEST, ADD_LIKE_REQUEST, REMOVE_LIKE_REQUEST, REMOVE_BOOKMARK_REQUEST, ADD_BOOKMARK_REQUEST } from '../../reducers/post';
 import PostDetail from './';
@@ -111,7 +112,8 @@ const Contents = ({ post, mode }) => {
             <>
               {post.content !== '' && (
                 <li>
-                  <Link href={`/profile/${post.User.username}`}><a><h3>{post.User.username}</h3></a></Link>{post.content}
+                  <Link href={`/profile/${post.User.username}`}><a><h3>{post.User.username}</h3></a></Link>
+                  <PostContent postData={post.content} />
                 </li>
               )}
               {post.Comments.length > 2 && (
@@ -131,12 +133,14 @@ const Contents = ({ post, mode }) => {
               )}
               {post.Comments[0] && (
                 <li>
-                  <Link href={`/profile/${post.Comments[0].User.username}`}><a><h3>{post.Comments[0].User.username}</h3></a></Link>{post.Comments[0].content}
+                  <Link href={`/profile/${post.Comments[0].User.username}`}><a><h3>{post.Comments[0].User.username}</h3></a></Link>
+                  <PostContent postData={post.Comments[0].content} />
                 </li>
               )}
               {post.Comments[1] && (
                 <li>
-                  <Link href={`/profile/${post.Comments[1].User.username}`}><a><h3>{post.Comments[1].User.username}</h3></a></Link>{post.Comments[1].content}
+                  <Link href={`/profile/${post.Comments[1].User.username}`}><a><h3>{post.Comments[1].User.username}</h3></a></Link>
+                  <PostContent postData={post.Comments[1].content} />
                 </li>
               )}
             </>
@@ -154,7 +158,8 @@ const Contents = ({ post, mode }) => {
                   </a>
                 </Link>
                 <div className="content">
-                  <Link href={`/profile/${post.User.username}`}><a style={{ color: '#222' }}><h3>{post.User.username}</h3></a></Link> {post.content}
+                  <Link href={`/profile/${post.User.username}`}><a style={{ color: '#222' }}><h3>{post.User.username}</h3></a></Link>
+                  <PostContent postData={post.content} />
                 </div>
               </li>
               {post.Comments.map((c) => (

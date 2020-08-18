@@ -4,15 +4,16 @@ import { useRouter } from 'next/router';
 import { END } from 'redux-saga';
 import axios from 'axios';
 
-import AppLayout from '../components/AppLayout';
-import PostList from '../components/PostList';
-import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
-import wrapper from '../store/configureStore';
-import { Global } from './profile/style';
-import { FlexColumn } from '../components/AppLayout/style';
+import AppLayout from '../../components/AppLayout';
+import PostList from '../../components/PostList';
+import { LOAD_MY_INFO_REQUEST } from '../../reducers/user';
+import wrapper from '../../store/configureStore';
+import { Global } from '../profile/style';
+import { FlexColumn } from '../../components/AppLayout/style';
 
-const Explore = () => {
+const Hashtag = () => {
   const router = useRouter();
+  const { hashtag } = router.query;
   const { me } = useSelector((state) => state.user);
 
   useEffect(() => {
@@ -25,7 +26,7 @@ const Explore = () => {
     <AppLayout>
       <FlexColumn>
         <Global />
-        <PostList type="explore" paramData="" />
+        <PostList type="hashtag" paramData={hashtag} />
       </FlexColumn>
     </AppLayout>
   );
@@ -45,4 +46,4 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
   await context.store.sagaTask.toPromise();
 });
 
-export default Explore;
+export default Hashtag;

@@ -61,6 +61,10 @@ export const LOAD_EXPLORE_POSTS_REQUEST = 'LOAD_EXPLORE_POSTS_REQUEST';
 export const LOAD_EXPLORE_POSTS_SUCCESS = 'LOAD_EXPLORE_POSTS_SUCCESS';
 export const LOAD_EXPLORE_POSTS_FAILURE = 'LOAD_EXPLORE_POSTS_FAILURE';
 
+export const LOAD_HASHTAG_POSTS_REQUEST = 'LOAD_HASHTAG_POSTS_REQUEST';
+export const LOAD_HASHTAG_POSTS_SUCCESS = 'LOAD_HASHTAG_POSTS_SUCCESS';
+export const LOAD_HASHTAG_POSTS_FAILURE = 'LOAD_HASHTAG_POSTS_FAILURE';
+
 export const LOAD_POSTS_REQUEST = 'LOAD_POSTS_REQUEST';
 export const LOAD_POSTS_SUCCESS = 'LOAD_POSTS_SUCCESS';
 export const LOAD_POSTS_FAILURE = 'LOAD_POSTS_FAILURE';
@@ -136,6 +140,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.loadPostLoading = false;
       draft.loadPostError = action.error;
       break;
+    case LOAD_HASHTAG_POSTS_REQUEST:
     case LOAD_EXPLORE_POSTS_REQUEST:
     case LOAD_TYPE_POSTS_REQUEST:
     case LOAD_POSTS_REQUEST:
@@ -143,6 +148,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.loadPostsDone = false;
       draft.loadPostsError = null;
       break;
+    case LOAD_HASHTAG_POSTS_SUCCESS:
     case LOAD_EXPLORE_POSTS_SUCCESS:
     case LOAD_TYPE_POSTS_SUCCESS:
       draft.loadPostsLoading = false;
@@ -156,6 +162,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.mainPosts = draft.mainPosts.concat(action.data);
       draft.hasMorePosts = action.data.length === 8;
       break;
+    case LOAD_HASHTAG_POSTS_FAILURE:
     case LOAD_EXPLORE_POSTS_FAILURE:
     case LOAD_TYPE_POSTS_FAILURE:
     case LOAD_POSTS_FAILURE:

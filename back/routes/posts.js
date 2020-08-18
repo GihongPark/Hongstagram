@@ -2,7 +2,7 @@ const express = require('express');
 const { Op } = require('sequelize');
 
 const { User, Post, Image, Comment } = require('../models');
-const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
+const { isLoggedIn } = require('./middlewares');
 
 const router = express.Router();
 
@@ -25,7 +25,7 @@ router.get('/', isLoggedIn, async (req, res, next) => {  // GET /posts
       ],
       include: [{
         model: User,
-        attributes: ['id', 'username'],
+        attributes: ['id', 'username', 'src'],
       }, {
         model: Image,
       }, {
@@ -73,7 +73,7 @@ router.get('/explore', async (req, res, next) => {  // GET /posts/explore
       ],
       include: [{
         model: User,
-        attributes: ['id', 'username'],
+        attributes: ['id', 'username', 'src'],
       }, {
         model: Image,
       }, {
@@ -123,7 +123,7 @@ router.get('/:username', isLoggedIn, async (req, res, next) => {  // GET /posts/
           model: Comment,
           include: [{
             model: User,
-            attributes: ['id', 'username'],
+            attributes: ['id', 'username', 'src'],
           }],
         }, {
           model: User, // 좋아요 누른 사람

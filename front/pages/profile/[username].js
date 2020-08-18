@@ -236,7 +236,7 @@ const Profile = () => {
             {userInfo?.id === me?.id ? <TabPane tab="저장됨" key="bookmark" /> : null}
             <TabPane tab="태그됨" key="tag" />
           </Tabs>
-          <PostList type={type} username={username} />
+          <PostList type={type} paramData={username} />
         </div>
       </FlexColumn>
     </AppLayout>
