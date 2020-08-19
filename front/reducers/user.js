@@ -31,6 +31,9 @@ const initialState = {
   removeProfileImageLoading: false, // 프로필 이미지 삭제 시도중
   removeProfileImageDone: false,
   removeProfileImageError: null,
+  updateProfileLoading: false, // 프로필 변경 시도웆
+  updateProfileDone: false,
+  updateProfileError: null,
   me: null,
   userInfo: null,
   userList: [],
@@ -75,6 +78,14 @@ export const UPLOAD_PROFILE_IMAGE_FAILURE = 'UPLOAD_PROFILE_IMAGE_FAILURE';
 export const REMOVE_PROFILE_IMAGE_REQUEST = 'REMOVE_PROFILE_IMAGE_REQUEST';
 export const REMOVE_PROFILE_IMAGE_SUCCESS = 'REMOVE_PROFILE_IMAGE_SUCCESS';
 export const REMOVE_PROFILE_IMAGE_FAILURE = 'REMOVE_PROFILE_IMAGE_FAILURE';
+
+export const UPDATE_PROFILE_REQUEST = 'UPDATE_PROFILE_REQUEST';
+export const UPDATE_PROFILE_SUCCESS = 'UPDATE_PROFILE_SUCCESS';
+export const UPDATE_PROFILE_FAILURE = 'UPDATE_PROFILE_FAILURE';
+
+export const UPDATE_PASSWORD_REQUEST = 'UPDATE_PASSWORD_REQUEST';
+export const UPDATE_PASSWORD_SUCCESS = 'UPDATE_PASSWORD_SUCCESS';
+export const UPDATE_PASSWORD_FAILURE = 'UPDATE_PASSWORD_FAILURE';
 
 export const AUTO_COMPLETE_REQUEST = 'AUTOCOMPLETE_REQUEST';
 export const AUTO_COMPLETE_SUCCESS = 'AUTOCOMPLETE_SUCCESS';
@@ -210,7 +221,9 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       break;
     case UPLOAD_PROFILE_IMAGE_SUCCESS: {
       draft.me.src = action.data;
-      draft.userInfo.src = action.data;
+      if (draft.userInfo) {
+        draft.userInfo.src = action.data;
+      }
       draft.uploadProfileImageLoading = false;
       draft.uploadProfileImageDone = true;
       break;
@@ -229,7 +242,9 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       break;
     case REMOVE_PROFILE_IMAGE_SUCCESS: {
       draft.me.src = null;
-      draft.userInfo.src = null;
+      if (draft.userInfo) {
+        draft.userInfo.src = null;
+      }
       draft.removeProfileImageLoading = false;
       draft.removeProfileImageDone = true;
       break;
@@ -237,6 +252,24 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case REMOVE_PROFILE_IMAGE_FAILURE:
       draft.removeProfileImageLoading = false;
       draft.removeProfileImageError = action.error;
+      break;
+    case UPDATE_PASSWORD_REQUEST:
+    case UPDATE_PROFILE_REQUEST:
+      draft.updateProfileLoading = true;
+      draft.updateProfileDone = false;
+      draft.updateProfileError = null;
+      break;
+    case UPDATE_PASSWORD_SUCCESS:
+    case UPDATE_PROFILE_SUCCESS: {
+      draft.me = action.data;
+      draft.updateProfileLoading = false;
+      draft.updateProfileDone = true;
+      break;
+    }
+    case UPDATE_PASSWORD_FAILURE:
+    case UPDATE_PROFILE_FAILURE:
+      draft.updateProfileLoading = false;
+      draft.updateProfileError = action.error;
       break;
     case ADD_POST_TO_ME:
       draft.me.Posts += 1;

@@ -189,7 +189,24 @@ router.patch('/edit', isLoggedIn, async (req, res, next) => {  // PATCH /user/ed
     {
       where: {id: req.user.id},
     });
-    res.status(200).send('ok');
+    const user = await User.findOne({
+      where: {id: req.user.id},
+      attributes: {
+        exclude: ['password']
+      },
+      include: [{
+        model: Post,
+        attributes: ['id'],
+      }, {
+        model: User,
+        as: 'Follows'
+      }, {
+        model: User,
+        as: 'Followers'
+      }]
+    });
+    
+    res.status(200).json(user);
   } catch (error) {
     console.error(error);
     next(error);
@@ -208,7 +225,24 @@ router.patch('/edit/pwd', isLoggedIn, async (req, res, next) => {  //PATCH  /use
       }, {
         where: {id: req.user.id},
       });
-      res.status(200).send('ok');
+
+      const user = await User.findOne({
+        where: {id: req.user.id},
+        attributes: {
+          exclude: ['password']
+        },
+        include: [{
+          model: Post,
+          attributes: ['id'],
+        }, {
+          model: User,
+          as: 'Follows'
+        }, {
+          model: User,
+          as: 'Followers'
+        }]
+      });
+      res.status(200).json(user);
     } else {
       res.status(403).send('비밀번호가 틀렸습니다');
     }

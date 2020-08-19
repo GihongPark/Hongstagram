@@ -70,6 +70,9 @@ const Profile = () => {
       });
     }
   });
+  const onProfileEdit = useCallback(() => {
+    router.push('/profile/edit');
+  });
   const onPopupProfileImage = useCallback(() => {
     setProfileImageVisible(true);
   });
@@ -183,7 +186,7 @@ const Profile = () => {
                         userInfo?.id === me?.id
                           ? (
                             <>
-                              <Button className="lg">프로필 편집</Button>
+                              <Button className="lg" onClick={onProfileEdit}>프로필 편집</Button>
                               <Button type="primary" onClick={onLogOut} loading={logOutLoading}>로그아웃</Button>
                             </>
                           )
@@ -201,7 +204,7 @@ const Profile = () => {
                       <SettingButton>
                         {
                           userInfo?.id === me?.id
-                            ? <Button className="xs">프로필 편집</Button>
+                            ? <Button className="xs" onClick={onProfileEdit}>프로필 편집</Button>
                             // : <Button className="xs">메시지 보내기</Button>
                             : <></>
                         }

@@ -153,3 +153,71 @@ export const ListWrapper = styled(Row)`
     }
   }
 `;
+
+export const Editor = styled.div`
+  width: 100%;
+  padding: 40px 0;
+  background: #fff;
+  border: 1px solid #dbdbdb;
+`;
+export const EditorHeader = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 28px;
+
+  > button {
+    width: 150px;
+    padding-right: 32px;
+    box-sizing: content-box;
+    text-align: right;
+    border: 0;
+    background-color: transparent;
+    cursor: pointer;
+  }
+  .info {
+    display: flex;
+    flex-flow: column;
+    align-items: flex-start;
+    width: 350px;
+
+    h2 {
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 20px;
+    }
+    button {
+      line-height: 14px;
+    }
+  }
+`;
+export const InputWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+
+  label {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 38px;
+    width: 150px;
+    padding-right: 32px;
+    box-sizing: content-box;
+    text-align: right;
+  }
+  input {
+    font-size: 16px;
+    max-width: 350px;
+  }
+`;
+export const CollapseWrapper = styled.div`
+  width: 600px;
+  margin: 0 auto;
+`;
+export const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin: 22px 0;
+`;

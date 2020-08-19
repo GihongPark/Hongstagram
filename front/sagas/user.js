@@ -32,6 +32,12 @@ import {
   REMOVE_PROFILE_IMAGE_REQUEST,
   REMOVE_PROFILE_IMAGE_SUCCESS,
   REMOVE_PROFILE_IMAGE_FAILURE,
+  UPDATE_PROFILE_REQUEST,
+  UPDATE_PROFILE_SUCCESS,
+  UPDATE_PROFILE_FAILURE,
+  UPDATE_PASSWORD_REQUEST,
+  UPDATE_PASSWORD_SUCCESS,
+  UPDATE_PASSWORD_FAILURE,
 } from '../reducers/user';
 import { FOLLOW_TO_POST, UNFOLLOW_TO_POST } from '../reducers/post';
 
@@ -240,6 +246,45 @@ function* removeProfileImage() {
   }
 }
 
+function updateProfileAPI(data) {
+  console.log(data);
+  return axios.patch('/user/edit', data);
+}
+function* updateProfile(action) {
+  try {
+    const result = yield call(updateProfileAPI, action.data);
+    yield put({
+      type: UPDATE_PROFILE_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: UPDATE_PROFILE_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
+function updatePasswordAPI(data) {
+  return axios.patch('/user/edit/pwd', data);
+}
+function* updatePassword(action) {
+  try {
+    const result = yield call(updatePasswordAPI, action.data);
+    yield put({
+      type: UPDATE_PASSWORD_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: UPDATE_PASSWORD_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
 function* watchLoadMyInfo() {
   yield takeLatest(LOAD_MY_INFO_REQUEST, loadMyInfo);
 }
@@ -280,6 +325,14 @@ function* watchRemoveProfileImage() {
   yield takeLatest(REMOVE_PROFILE_IMAGE_REQUEST, removeProfileImage);
 }
 
+function* watchUpdateProfile() {
+  yield takeLatest(UPDATE_PROFILE_REQUEST, updateProfile);
+}
+
+function* watchUpdatePassword() {
+  yield takeLatest(UPDATE_PASSWORD_REQUEST, updatePassword);
+}
+
 export default function* userSaga() {
   yield all([
     fork(watchLoadMyInfo),
@@ -292,5 +345,7 @@ export default function* userSaga() {
     fork(watchUnfollow),
     fork(watchUploadProfileImage),
     fork(watchRemoveProfileImage),
+    fork(watchUpdateProfile),
+    fork(watchUpdatePassword),
   ]);
 }
