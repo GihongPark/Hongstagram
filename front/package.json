@@ -4,13 +4,15 @@
   "description": "instagram clone fullstack project",
   "main": "index.js",
   "scripts": {
-    "dev": "next"
+    "dev": "next",
+    "build": "cross-env ANALYZE=true NODE_ENV=production next build"
   },
   "keywords": [],
   "author": "gipark",
   "license": "ISC",
   "dependencies": {
     "@ant-design/icons": "^4.2.2",
+    "@next/bundle-analyzer": "^9.5.2",
     "antd": "^4.5.2",
     "axios": "^0.19.2",
     "cross-env": "^7.0.2",
