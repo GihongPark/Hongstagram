@@ -47,7 +47,7 @@ const TopBar = () => {
     console.log('onSelect: ', data);
     // TODO: 해당 유저 || 태그 이동
     if (data[0] === '#') {
-      router.push(`/tag/${data.slice(1)}`);
+      router.push(`/hashtag/${data.slice(1)}`);
     } else {
       router.push(`/profile/${data}`);
     }
