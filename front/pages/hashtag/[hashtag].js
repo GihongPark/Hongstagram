@@ -8,7 +8,7 @@ import AppLayout from '../../components/AppLayout';
 import PostList from '../../components/PostList';
 import { LOAD_MY_INFO_REQUEST } from '../../reducers/user';
 import wrapper from '../../store/configureStore';
-import { Global } from '../profile/style';
+import { Global } from '../../style/profile';
 import { FlexColumn } from '../../components/AppLayout/style';
 
 const Hashtag = () => {

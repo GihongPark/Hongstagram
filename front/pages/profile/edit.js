@@ -2,6 +2,7 @@ import React, { useCallback, useState, useRef, useEffect } from 'react';
 import { Avatar, Modal, Form, Input, Collapse, Button } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { END } from 'redux-saga';
 import axios from 'axios';
@@ -9,7 +10,7 @@ import axios from 'axios';
 import AppLayout from '../../components/AppLayout';
 import {
   Editor, ProfileImageHeader, ProfileImageAction, EditorHeader, InputWrapper, CollapseWrapper, ButtonWrapper,
-} from './style';
+} from '../../style/profile';
 import { NormalButton } from '../../components/PostDetail/style';
 import { LOAD_MY_INFO_REQUEST, UPLOAD_PROFILE_IMAGE_REQUEST, REMOVE_PROFILE_IMAGE_REQUEST, UPDATE_PROFILE_REQUEST, UPDATE_PASSWORD_REQUEST } from '../../reducers/user';
 import wrapper from '../../store/configureStore';
@@ -102,90 +103,95 @@ const ProfileEdit = () => {
   });
 
   return (
-    <AppLayout>
-      <Editor>
-        <EditorHeader>
-          <button type="button" onClick={onPopupProfileImage}>
-            {
-              me.src
-                ? <Avatar src={`${backUrl}/${me.src}`} size={42} />
-                : <Avatar icon={<UserOutlined />} size={42} />
-            }
-          </button>
-          <Modal
-            visible={profileImageVisible}
-            onCancel={onCancel}
-            footer={null}
-            width="400px"
-            bodyStyle={{ padding: '0' }}
-            closable={false}
-          >
-            <ProfileImageHeader>프로필 사진 바꾸기</ProfileImageHeader>
-            <ProfileImageAction>
-              <input type="file" name="image" hidden ref={imageInput} onChange={onChangeImages} />
-              <NormalButton style={{ color: '#0095f6', fontWeight: 600 }} onClick={onProfileUpload}>사진 업로드</NormalButton>
-              <NormalButton style={{ color: '#ed4956', fontWeight: 600 }} onClick={onProfileDelete}>현재 사진 삭제</NormalButton>
-              <NormalButton onClick={onCancel}>취소</NormalButton>
-            </ProfileImageAction>
-          </Modal>
-          <div className="info">
-            <h2>{me.username}</h2>
-            <NormalButton style={{ color: '#0095f6', fontWeight: 600 }} onClick={onPopupProfileImage}>프로필 사진 바꾸기</NormalButton>
-          </div>
-        </EditorHeader>
-        <Form onFinish={onSubmit}>
-          <InputWrapper>
-            <label htmlFor="user-email">
-              이메일
-            </label>
-            <Input name="user-email" type="email" value={me.email} disabled />
-          </InputWrapper>
-          <InputWrapper>
-            <label htmlFor="user-name">
-              이름
-            </label>
-            <Input name="user-name" value={name} onChange={onChangeName} placeholder="이름" />
-          </InputWrapper>
-          <InputWrapper>
-            <label htmlFor="user-username">
-              사용자 이름
-            </label>
-            <Input name="user-username" value={username} onChange={onChangeUsername} placeholder="사용자 이름" />
-          </InputWrapper>
-          <CollapseWrapper>
-            <Collapse>
-              <Collapse.Panel header="비밀번호 변경">
-                <InputWrapper>
-                  <label htmlFor="user-exPassword">
-                    이전 비밀번호
-                  </label>
-                  <Input name="user-exPassword" type="password" value={exPassword} onChange={onChangeExPassword} />
-                </InputWrapper>
-                <InputWrapper>
-                  <label htmlFor="user-password">
-                    새 비밀번호
-                  </label>
-                  <Input name="user-password" type="password" value={password} onChange={onChangePassword} />
-                </InputWrapper>
-                <InputWrapper>
-                  <label htmlFor="user-passwordCheck">
-                    새 비밀번호 확인
-                  </label>
-                  <Input name="user-passwordCheck" type="password" value={passwordCheck} onChange={onChangePasswordCheck} />
-                  {passwordError && <div style={{ color: 'red' }}>비밀번호가 일치하지 않습니다.</div>}
-                </InputWrapper>
-                <ButtonWrapper>
-                  <Button type="primary" onClick={onClickPassword}>비밀번호 변경</Button>
-                </ButtonWrapper>
-              </Collapse.Panel>
-            </Collapse>
-          </CollapseWrapper>
-          <ButtonWrapper>
-            <Button type="primary" htmlType="submit">제출</Button>
-          </ButtonWrapper>
-        </Form>
-      </Editor>
-    </AppLayout>
+    <>
+      <Head>
+        <title>프로필 변경 • Hongstagram</title>
+      </Head>
+      <AppLayout>
+        <Editor>
+          <EditorHeader>
+            <button type="button" onClick={onPopupProfileImage}>
+              {
+                me.src
+                  ? <Avatar src={`${backUrl}/${me.src}`} size={42} />
+                  : <Avatar icon={<UserOutlined />} size={42} />
+              }
+            </button>
+            <Modal
+              visible={profileImageVisible}
+              onCancel={onCancel}
+              footer={null}
+              width="400px"
+              bodyStyle={{ padding: '0' }}
+              closable={false}
+            >
+              <ProfileImageHeader>프로필 사진 바꾸기</ProfileImageHeader>
+              <ProfileImageAction>
+                <input type="file" name="image" hidden ref={imageInput} onChange={onChangeImages} />
+                <NormalButton style={{ color: '#0095f6', fontWeight: 600 }} onClick={onProfileUpload}>사진 업로드</NormalButton>
+                <NormalButton style={{ color: '#ed4956', fontWeight: 600 }} onClick={onProfileDelete}>현재 사진 삭제</NormalButton>
+                <NormalButton onClick={onCancel}>취소</NormalButton>
+              </ProfileImageAction>
+            </Modal>
+            <div className="info">
+              <h2>{me.username}</h2>
+              <NormalButton style={{ color: '#0095f6', fontWeight: 600 }} onClick={onPopupProfileImage}>프로필 사진 바꾸기</NormalButton>
+            </div>
+          </EditorHeader>
+          <Form onFinish={onSubmit}>
+            <InputWrapper>
+              <label htmlFor="user-email">
+                이메일
+              </label>
+              <Input name="user-email" type="email" value={me.email} disabled />
+            </InputWrapper>
+            <InputWrapper>
+              <label htmlFor="user-name">
+                이름
+              </label>
+              <Input name="user-name" value={name} onChange={onChangeName} placeholder="이름" />
+            </InputWrapper>
+            <InputWrapper>
+              <label htmlFor="user-username">
+                사용자 이름
+              </label>
+              <Input name="user-username" value={username} onChange={onChangeUsername} placeholder="사용자 이름" />
+            </InputWrapper>
+            <CollapseWrapper>
+              <Collapse>
+                <Collapse.Panel header="비밀번호 변경">
+                  <InputWrapper>
+                    <label htmlFor="user-exPassword">
+                      이전 비밀번호
+                    </label>
+                    <Input name="user-exPassword" type="password" value={exPassword} onChange={onChangeExPassword} />
+                  </InputWrapper>
+                  <InputWrapper>
+                    <label htmlFor="user-password">
+                      새 비밀번호
+                    </label>
+                    <Input name="user-password" type="password" value={password} onChange={onChangePassword} />
+                  </InputWrapper>
+                  <InputWrapper>
+                    <label htmlFor="user-passwordCheck">
+                      새 비밀번호 확인
+                    </label>
+                    <Input name="user-passwordCheck" type="password" value={passwordCheck} onChange={onChangePasswordCheck} />
+                    {passwordError && <div style={{ color: 'red' }}>비밀번호가 일치하지 않습니다.</div>}
+                  </InputWrapper>
+                  <ButtonWrapper>
+                    <Button type="primary" onClick={onClickPassword}>비밀번호 변경</Button>
+                  </ButtonWrapper>
+                </Collapse.Panel>
+              </Collapse>
+            </CollapseWrapper>
+            <ButtonWrapper>
+              <Button type="primary" htmlType="submit">제출</Button>
+            </ButtonWrapper>
+          </Form>
+        </Editor>
+      </AppLayout>
+    </>
   );
 };
 
