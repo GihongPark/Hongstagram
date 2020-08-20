@@ -92,6 +92,15 @@ export const Content = styled.div`
     }
   }
 `;
+export const Date = styled.div`
+  order: 3;
+  padding-left: 8px;
+  margin-bottom: 4px;
+  color: #8e8e8e;
+  font-size: 10px;
+  line-height: 18px;
+  letter-spacing: .2px;
+`;
 export const Action = styled.div`
   display: flex;
   flex-flow: column;

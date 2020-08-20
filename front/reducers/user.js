@@ -93,6 +93,7 @@ export const AUTO_COMPLETE_FAILURE = 'AUTOCOMPLETE_FAILURE';
 
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
+export const REMOVE_USER_LIST = 'REMOVE_USER_LIST';
 
 const reducer = (state = initialState, action) => produce(state, (draft) => {
   switch (action.type) {
@@ -137,6 +138,10 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case LOAD_USER_LIST_FAILURE:
       draft.loadUserListLoading = false;
       draft.loadUserListError = action.error;
+      break;
+    case REMOVE_USER_LIST:
+      draft.loadUserListDone = false;
+      draft.userList = [];
       break;
     case LOG_IN_REQUEST:
       draft.logInLoading = true;

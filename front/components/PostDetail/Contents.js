@@ -4,15 +4,21 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Input, Avatar, Modal } from 'antd';
 import { HeartOutlined, MessageOutlined, StarOutlined, HeartTwoTone, StarTwoTone, UserOutlined } from '@ant-design/icons';
 import Link from 'next/link';
+import moment from 'moment';
 
-import { Global, NormalButton, Content, Action, List, Like, CommentList, CommentInput, CommentButton } from './style';
+import { Global, NormalButton, Content, Action, List, Like, CommentList, CommentInput, CommentButton, Date } from './style';
 import useInput from '../../hooks/useInput';
 import PostContent from './PostContent';
 import UserList from '../UserList';
 import Comment from './Comment';
-import { ADD_COMMENT_REQUEST, ADD_LIKE_REQUEST, REMOVE_LIKE_REQUEST, REMOVE_BOOKMARK_REQUEST, ADD_BOOKMARK_REQUEST } from '../../reducers/post';
+import {
+  ADD_COMMENT_REQUEST, ADD_LIKE_REQUEST, REMOVE_LIKE_REQUEST, REMOVE_BOOKMARK_REQUEST, ADD_BOOKMARK_REQUEST
+} from '../../reducers/post';
+import { REMOVE_USER_LIST } from '../../reducers/user';
 import PostDetail from './';
 import { backUrl } from '../../config/config';
+
+moment.locale('ko');
 
 const Contents = ({ post, mode }) => {
   const dispatch = useDispatch();
@@ -83,6 +89,9 @@ const Contents = ({ post, mode }) => {
   const hideLike = useCallback(() => {
     setUserListVisible(false);
     setUserListType('');
+    dispatch({
+      type: REMOVE_USER_LIST,
+    });
   });
 
   const showModal = useCallback(() => {
@@ -180,6 +189,7 @@ const Contents = ({ post, mode }) => {
           )}
         </ul>
       </CommentList>
+      <Date>{moment(post.createdAt, 'YYYYMMDD').fromNow()}</Date>
       {!post.commentAllow && (
         <CommentInput style={style}>
           <Input.TextArea

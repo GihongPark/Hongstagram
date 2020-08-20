@@ -9,7 +9,9 @@ import axios from 'axios';
 import AppLayout from '../../components/AppLayout';
 import PostList from '../../components/PostList';
 import UserList from '../../components/UserList';
-import { LOAD_MY_INFO_REQUEST, LOAD_USER_REQUEST, LOG_OUT_REQUEST, FOLLOW_REQUEST, UNFOLLOW_REQUEST, UPLOAD_PROFILE_IMAGE_REQUEST, REMOVE_PROFILE_IMAGE_REQUEST } from '../../reducers/user';
+import {
+  LOAD_MY_INFO_REQUEST, LOAD_USER_REQUEST, LOG_OUT_REQUEST, FOLLOW_REQUEST, UNFOLLOW_REQUEST, UPLOAD_PROFILE_IMAGE_REQUEST, REMOVE_PROFILE_IMAGE_REQUEST, REMOVE_USER_LIST
+} from '../../reducers/user';
 import wrapper from '../../store/configureStore';
 import { UserInfo, ProfileImageButton, ProfileImageDiv, ProfileInfo, Global, ListWrapper, SettingButton, ProfileImageHeader, ProfileImageAction } from './style';
 import { FlexColumn } from '../../components/AppLayout/style';
@@ -104,6 +106,9 @@ const Profile = () => {
   const hideUserList = useCallback(() => {
     setUserListVisible(false);
     setUserListType('');
+    dispatch({
+      type: REMOVE_USER_LIST,
+    });
   });
 
   const onChangeTab = useCallback((key) => {

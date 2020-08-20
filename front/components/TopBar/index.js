@@ -110,7 +110,7 @@ const TopBar = () => {
                     </Link>
                   </li>
                 </Tooltip>
-                <Tooltip placement="bottom" title="Active">
+                {/* <Tooltip placement="bottom" title="Active">
                   <li>
                     <Link href="/active">
                       <a>
@@ -122,7 +122,7 @@ const TopBar = () => {
                       </a>
                     </Link>
                   </li>
-                </Tooltip>
+                </Tooltip> */}
                 <Tooltip placement="bottom" title="Profile">
                   <li>
                     <Link href={`/profile/${me?.username}`}>

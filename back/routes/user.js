@@ -56,13 +56,15 @@ router.delete('/image', isLoggedIn, async (req, res, next) => { // POST /user/im
 
 router.get('/:username/followers', isLoggedIn, async (req, res, next) => { // GET /user/followers
   try {
-    const user = await User.findOne({ where: { id: req.params.username }});
+    const user = await User.findOne({ where: { username: req.params.username }});
+    console.log(user);
     if (!user) {
       res.status(403).send('존재하지 않는 사용자입니다');
     }
     const followers = await user.getFollowers({
       attributes: ['id', 'username', 'name', 'src'],
     });
+    console.log("f: ", followers)
     res.status(200).json(followers);
   } catch (error) {
     console.error(error);
@@ -72,7 +74,7 @@ router.get('/:username/followers', isLoggedIn, async (req, res, next) => { // GE
 
 router.get('/:username/follows', async (req, res, next) => { // GET /user/1/follows
   try {
-    const user = await User.findOne({ where: { id: req.params.username }});
+    const user = await User.findOne({ where: { username: req.params.username }});
     if (!user) {
       res.status(403).send('존재하지 않는 사용자입니다');
     }

@@ -80,6 +80,7 @@ function* loadUser(action) {
 }
 
 function loadUserListAPI({ type, paramData }, lastId) {
+  console.log(type, paramData);
   if (type === 'follow') {
     return axios.get(`/user/${paramData}/follows?lastId=${lastId || 0}`);
   }
