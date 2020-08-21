@@ -5,7 +5,6 @@ import Slick from 'react-slick';
 
 import { Image } from './style';
 import SlickGlobal from '../../style/slick';
-import { backUrl } from '../../config/config';
 
 const ImageComponent = ({ images, mode }) => (
   <Image className={mode}>
@@ -21,7 +20,7 @@ const ImageComponent = ({ images, mode }) => (
         images.map((image) => (
           <div key={image.src}>
             <img
-              src={`${backUrl}/${image.src}`}
+              src={`${image.src}`}
               style={{ width: '100%' }}
               alt={image.src}
             />

@@ -7,7 +7,6 @@ import Link from 'next/link';
 
 import { Header, UserName, NormalButton } from './style';
 import { FOLLOW_REQUEST, UNFOLLOW_REQUEST } from '../../reducers/user';
-import { backUrl } from '../../config/config';
 
 const HeaderComponent = ({ user, mode }) => {
   const dispatch = useDispatch();
@@ -31,7 +30,7 @@ const HeaderComponent = ({ user, mode }) => {
         <a>
           {
             user.src
-              ? <Avatar src={`${backUrl}/${user.src}`} size={32} />
+              ? <Avatar src={`${user.src}`} size={32} />
               : <Avatar icon={<UserOutlined />} size={32} />
           }
         </a>

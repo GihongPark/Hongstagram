@@ -17,7 +17,6 @@ import wrapper from '../../store/configureStore';
 import { UserInfo, ProfileImageButton, ProfileImageDiv, ProfileInfo, Global, ListWrapper, SettingButton, ProfileImageHeader, ProfileImageAction } from '../../style/profile';
 import { FlexColumn } from '../../components/AppLayout/style';
 import { NormalButton } from '../../components/PostDetail/style';
-import { backUrl } from '../../config/config';
 
 const { TabPane } = Tabs;
 
@@ -135,14 +134,14 @@ const Profile = () => {
                           <Col xs={24} lg={0}>
                             {
                               userInfo?.src
-                                ? <Avatar src={`${backUrl}/${userInfo?.src}`} size={77} />
+                                ? <Avatar src={`${userInfo?.src}`} size={77} />
                                 : <Avatar icon={<UserOutlined />} size={77} />
                             }
                           </Col>
                           <Col xs={0} lg={24}>
                             {
                               userInfo?.src
-                                ? <Avatar src={`${backUrl}/${userInfo?.src}`} size={150} />
+                                ? <Avatar src={`${userInfo?.src}`} size={150} />
                                 : <Avatar icon={<UserOutlined />} size={150} />
                             }
                           </Col>
@@ -172,14 +171,14 @@ const Profile = () => {
                         <Col xs={24} lg={0}>
                           {
                             userInfo?.src
-                              ? <Avatar src={`${backUrl}/${userInfo?.src}`} size={77} />
+                              ? <Avatar src={`${userInfo?.src}`} size={77} />
                               : <Avatar icon={<UserOutlined />} size={77} />
                           }
                         </Col>
                         <Col xs={0} lg={24}>
                           {
                             userInfo?.src
-                              ? <Avatar src={`${backUrl}/${userInfo?.src}`} size={150} />
+                              ? <Avatar src={`${userInfo?.src}`} size={150} />
                               : <Avatar icon={<UserOutlined />} size={150} />
                           }
                         </Col>

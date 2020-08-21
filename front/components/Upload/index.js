@@ -8,7 +8,6 @@ import Router from 'next/router';
 
 import useInput from '../../hooks/useInput';
 import { UPLOAD_IMAGES_REQUEST, REMOVE_IMAGE, ADD_POST_REQUEST, REMOVE_IMAGE_ALL } from '../../reducers/post';
-import { backUrl } from '../../config/config';
 import { Global, Title, Content, ImgWrapper } from './style';
 import SlickGlobal from '../../style/slick';
 import { Left, Center, Right } from '../AppLayout/style';
@@ -162,7 +161,7 @@ const Upload = ({ visible, setVisible }) => {
                           <Button shape="circle" icon={<DeleteFilled />} size="small" onClick={onRemoveImage(i)} />
                         </div>
                         <img
-                          src={`${backUrl}/${v}`}
+                          src={`${v}`}
                           style={{ width: '100%' }}
                           alt={v}
                         />

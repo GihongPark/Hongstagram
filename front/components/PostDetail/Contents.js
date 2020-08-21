@@ -16,7 +16,6 @@ import {
 } from '../../reducers/post';
 import { REMOVE_USER_LIST } from '../../reducers/user';
 import PostDetail from './';
-import { backUrl } from '../../config/config';
 
 moment.locale('ko');
 
@@ -172,7 +171,7 @@ const Contents = ({ post, mode }) => {
                   <a>
                     {
                       post.User.src
-                        ? <Avatar src={`${backUrl}/${post.User.src}`} size={32} />
+                        ? <Avatar src={`${post.User.src}`} size={32} />
                         : <Avatar icon={<UserOutlined />} size={32} />
                     }
                   </a>

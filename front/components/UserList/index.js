@@ -7,7 +7,6 @@ import Link from 'next/link';
 
 import { Global, Title, List, Image, Name } from './style';
 import { LOAD_USER_LIST_REQUEST } from '../../reducers/user';
-import { backUrl } from '../../config/config';
 
 const LIST_TYPE = {
   like: '좋아요',
@@ -50,7 +49,7 @@ const UserList = ({ type, paramData, visible, onCancel }) => {
                     <Image>
                       {
                         user.src
-                          ? <Avatar src={`${backUrl}/${user.src}`} size={32} />
+                          ? <Avatar src={`${user.src}`} size={32} />
                           : <Avatar icon={<UserOutlined />} size={32} />
                       }
                     </Image>

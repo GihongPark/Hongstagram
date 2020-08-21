@@ -14,7 +14,6 @@ import {
 import { NormalButton } from '../../components/PostDetail/style';
 import { LOAD_MY_INFO_REQUEST, UPLOAD_PROFILE_IMAGE_REQUEST, REMOVE_PROFILE_IMAGE_REQUEST, UPDATE_PROFILE_REQUEST, UPDATE_PASSWORD_REQUEST } from '../../reducers/user';
 import wrapper from '../../store/configureStore';
-import { backUrl } from '../../config/config';
 import useInput from '../../hooks/useInput';
 
 const ProfileEdit = () => {
@@ -113,7 +112,7 @@ const ProfileEdit = () => {
             <button type="button" onClick={onPopupProfileImage}>
               {
                 me.src
-                  ? <Avatar src={`${backUrl}/${me.src}`} size={42} />
+                  ? <Avatar src={`${me.src}`} size={42} />
                   : <Avatar icon={<UserOutlined />} size={42} />
               }
             </button>

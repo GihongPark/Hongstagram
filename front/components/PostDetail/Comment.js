@@ -7,8 +7,6 @@ import Link from 'next/link';
 
 import { NormalButton } from './style';
 import { REMOVE_COMMENT_REQUEST } from '../../reducers/post';
-import { backUrl } from '../../config/config';
-import PostContent from './PostContent';
 
 const Comment = ({ comment }) => {
   const dispatch = useDispatch();
@@ -26,7 +24,7 @@ const Comment = ({ comment }) => {
         <a>
           {
             comment.User.src
-              ? <Avatar src={`${backUrl}/${comment.User.src}`} size={32} />
+              ? <Avatar src={`${comment.User.src}`} size={32} />
               : <Avatar icon={<UserOutlined />} size={32} />
           }
         </a>

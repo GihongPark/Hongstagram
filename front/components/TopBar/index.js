@@ -17,7 +17,6 @@ import { useRouter } from 'next/router';
 import { Block, LayoutWrapper, Layout, Logo, AutoSearch, Menu, CenterXs } from './style';
 import { Left, Right } from '../AppLayout/style';
 import Upload from '../Upload';
-import { backUrl } from '../../config/config';
 import { AUTO_COMPLETE_REQUEST } from '../../reducers/search';
 
 const TopBar = () => {
@@ -129,7 +128,7 @@ const TopBar = () => {
                       <a>
                         {
                           me?.src
-                            ? <Avatar src={`${backUrl}/${me?.src}`} size="small" />
+                            ? <Avatar src={`${me?.src}`} size="small" />
                             : <Avatar icon={<UserOutlined />} size="small" />
                         }
                       </a>
