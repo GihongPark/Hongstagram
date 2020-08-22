@@ -20,7 +20,7 @@ const ImageComponent = ({ images, mode }) => (
         images.map((image) => (
           <div key={image.src}>
             <img
-              src={`${image.src}`}
+              src={`${image.src.replace(/\/thumb\//, '/original/')}`}
               style={{ width: '100%' }}
               alt={image.src}
             />

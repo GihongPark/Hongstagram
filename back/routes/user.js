@@ -39,13 +39,13 @@ const upload = multer({
 // 이미지 업로드
 router.post('/image', isLoggedIn, upload.single('image'), async (req, res, next) => { // POST /user/image
   await User.update({
-    src: req.file.location
+    src: req.file.location.replace(/\/original\//, '/thumb/')
   }, {
     where: {
       id: req.user.id
     }
   })
-  res.status(200).json(req.file.filename);
+  res.status(200).json(req.file.location.replace(/\/original\//, '/thumb/'));
 });
 // 이미지 업로드
 router.delete('/image', isLoggedIn, async (req, res, next) => { // POST /user/image
