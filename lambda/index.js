@@ -17,7 +17,7 @@ exports.handler = async (event, context, callback) => {
     const s3Object = await s3.getObject({ Bucket, Key }).promise();
     console.log('original', s3Object.Body.length);
     const resizedImage = await sharp(s3Object.Body)
-      .resize(320, 320, { fit: 'inside' })
+      .resize(320, 320)
       .toFormat(requiredFormat)
       .toBuffer();
     await s3.putObject({
