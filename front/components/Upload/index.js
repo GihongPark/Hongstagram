@@ -161,7 +161,7 @@ const Upload = ({ visible, setVisible }) => {
                           <Button shape="circle" icon={<DeleteFilled />} size="small" onClick={onRemoveImage(i)} />
                         </div>
                         <img
-                          src={`${v}`}
+                          src={`${v.replace(/\/thumb\//, '/original/')}`}
                           style={{ width: '100%' }}
                           alt={v}
                         />
