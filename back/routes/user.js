@@ -360,7 +360,7 @@ router.post('/login', isNotLoggedIn, async (req, res, next) => {  // POST  /user
       }
       const LoginUserInfo = await User.findOne({
         where: { id: user.id },
-        attributes: ['username', 'src'],
+        attributes: ['id', 'username', 'src'],
       });
       return res.status(200).json(LoginUserInfo);
     });
