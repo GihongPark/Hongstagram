@@ -39,7 +39,7 @@ if (process.env.NODE_ENV === 'production') {
   app.use(morgan('dev'));
 }
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://hongsta.com', ],
+  origin: ['http://localhost:3000', 'https://hongsta.com', ],
   credentials: true,  // 쿠키 설정
 }));
 
@@ -76,6 +76,6 @@ app.use('/comment', commentRouter);
 app.use('/like', likeRouter);
 app.use('/bookmark', bookmarkRouter);
 
-app.listen(80, () => {
+app.listen(3065, () => {
   console.log('서버 실행 중!');
 });

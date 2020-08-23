@@ -1,4 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
+import { Empty } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import Router from 'next/router';
 import { END } from 'redux-saga';
@@ -9,9 +11,7 @@ import PostDetail from '../components/PostDetail';
 import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
 import wrapper from '../store/configureStore';
-import { Empty } from 'antd';
 import { Loading } from '../components/PostList/style';
-import { LoadingOutlined } from '@ant-design/icons';
 
 const Home = () => {
   const dispatch = useDispatch();
