@@ -7,6 +7,7 @@ import Link from 'next/link';
 
 import { NormalButton } from './style';
 import { REMOVE_COMMENT_REQUEST } from '../../reducers/post';
+import PostContent from './PostContent';
 
 const Comment = ({ comment }) => {
   const dispatch = useDispatch();
