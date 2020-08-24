@@ -75,6 +75,14 @@ export const Image = styled.div`
   &.post {
     @media (min-width: 768px) {
       margin-right: 335px;
+      min-height: 450px;
+      display: flex;
+      align-items: center;
+      background: #000;
+
+      & > .slick-slider {
+        width: 100%;
+      }
     }
   }
 `;
