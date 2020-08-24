@@ -31,18 +31,22 @@ db.sequelize.sync()
   .catch(console.error);
 passportConfig();
 
-app.set('trust proxy', 1);
 if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
   app.use(morgan('combined'));
   app.use(hpp());
   app.use(helmet());
+  app.use(cors({
+    origin: ['https://hongsta.com'],
+    credentials: true,  // 쿠키 설정
+  }));
 } else {
   app.use(morgan('dev'));
+  app.use(cors({
+    origin: ['http://localhost:3000'],
+    credentials: true,  // 쿠키 설정
+  }));
 }
-app.use(cors({
-  origin: ['http://localhost:3000', 'https://hongsta.com', ],
-  credentials: true,  // 쿠키 설정
-}));
 
 //  front에서 이미지 받아오기위함
 app.use('/', express.static(path.join(__dirname, 'uploads')));
