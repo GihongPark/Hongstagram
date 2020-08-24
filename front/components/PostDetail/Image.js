@@ -16,17 +16,24 @@ const ImageComponent = ({ images, mode }) => (
       slidesToScroll={1}
       adaptiveHeight
     >
-      {
-        images.map((image) => (
-          <div key={image.src}>
-            <img
-              src={`${image.src.replace(/\/thumb\//, '/original/')}`}
-              style={{ width: '100%' }}
-              alt={image.src}
-            />
-          </div>
-        ))
-      }
+      {mode === 'list' && images.map((image) => (
+        <div key={image.src}>
+          <img
+            src={`${image.src.replace(/\/thumb\//, '/main/')}`}
+            style={{ width: '100%' }}
+            alt={image.src}
+          />
+        </div>
+      ))}
+      {mode === 'post' && images.map((image) => (
+        <div key={image.src}>
+          <img
+            src={`${image.src.replace(/\/thumb\//, '/original/')}`}
+            style={{ width: '100%' }}
+            alt={image.src}
+          />
+        </div>
+      ))}
     </Slick>
   </Image>
 );
