@@ -319,13 +319,21 @@ router.delete('/:userId/follower', isLoggedIn, async (req, res, next) => { // DE
 router.post('/signup', isNotLoggedIn, async (req, res, next) => {  // POST  /user/signup
   try {
     // 기존 사용자 찾기
-    const exUser = await User.findOne({
+    const exEmail = await Email.findOne({
       where: {
         email: req.body.email,
       }
     });
-    if (exUser) {
+    if (exEmail) {
       return res.status(403).send('이미 사용중인 이메일 입니다.');
+    }
+    const exUsername = await Email.findOne({
+      where: {
+        username: req.body.username,
+      }
+    });
+    if (exUsername) {
+      return res.status(403).send('이미 사용중인 사용자 이름 입니다.');
     }
     const hashedPassword = await bcrypt.hash(req.body.password, 10);  // 두번째 인수는 10~13의 숫자를 넣어준다 (수가 클수록 보안이 올라감)
     await User.create({
