@@ -19,7 +19,7 @@ const Home = () => {
   const {
     mainPosts, hasMorePosts, loadPostsLoading, loadPostsDone,
   } = useSelector((state) => state.post);
-  const style = useMemo(() => ({ maxWidth: '614px', width: '90%' }));
+  const style = useMemo(() => ({ maxWidth: '600px', width: '90%' }));
 
   useEffect(() => {
     if (!me || !me.id) {
