@@ -38,10 +38,8 @@ const HeaderComponent = ({ user, mode }) => {
       <UserName>
         <Link href={`/profile/${user.username}`}><a style={{ color: '#222' }}><span>{user.username}</span></a></Link>
         {
-          user.id
-            && user.id === me.id
-            ? null
-            : (
+          mode === 'post' && user.id !== me.id
+            ? (
               <span>{' '}•{' '}
                 {
                   user.isFollow
@@ -50,6 +48,7 @@ const HeaderComponent = ({ user, mode }) => {
                 }
               </span>
             )
+            : null
         }
       </UserName>
     </Header>
