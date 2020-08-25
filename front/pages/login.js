@@ -76,7 +76,7 @@ const Signup = () => {
               </InputWrapper>
               <ButtonWrapper>
                 <Button type="primary" htmlType="submit" loading={logInLoading}>로그인</Button>
-                <Button style={{ marginTop: '8px' }} htmlType="submit" loading={logInLoading} onClick={onGuestLogin}>게스트 아이디로 로그인</Button>
+                <Button style={{ marginTop: '8px' }} loading={logInLoading} onClick={onGuestLogin}>게스트 아이디로 로그인</Button>
               </ButtonWrapper>
               <Terms />
             </FormWrapper>

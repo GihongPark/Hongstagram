@@ -328,7 +328,7 @@ router.delete('/:userId/follower', isLoggedIn, async (req, res, next) => { // DE
 router.post('/signup', isNotLoggedIn, async (req, res, next) => {  // POST  /user/signup
   try {
     // 기존 사용자 찾기
-    const exEmail = await Email.findOne({
+    const exEmail = await User.findOne({
       where: {
         email: req.body.email,
       }
@@ -336,7 +336,7 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => {  // POST  /use
     if (exEmail) {
       return res.status(403).send('이미 사용중인 이메일 입니다.');
     }
-    const exUsername = await Email.findOne({
+    const exUsername = await User.findOne({
       where: {
         username: req.body.username,
       }
@@ -362,8 +362,8 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => {  // POST  /use
 
 // 게스트 로그인
 router.post('/guestLogin', isNotLoggedIn, async (req, res, next) => {  // POST  /user/guestLogin
-  req.email = 'guest@email.com';
-  req.password = process.env.GUEST_PASSWORD;
+  req.body.email = 'guest@email.com';
+  req.body.password = process.env.GUEST_PASSWORD;
   passport.authenticate('local', (err, user, info) => {
     if (err) {
       console.error(err);
