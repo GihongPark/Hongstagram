@@ -227,7 +227,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case UPLOAD_PROFILE_IMAGE_SUCCESS: {
       draft.me.src = action.data;
       if (draft.userInfo) {
-        draft.userInfo.src = action.data;
+        draft.userInfo.src = action.data.replace(/\/thumb\//, '/original/');
       }
       draft.uploadProfileImageLoading = false;
       draft.uploadProfileImageDone = true;
