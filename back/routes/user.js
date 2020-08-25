@@ -189,7 +189,7 @@ router.patch('/edit', isLoggedIn, async (req, res, next) => {  // PATCH /user/ed
         username: req.body.username,
       }
     });
-    if (exUsername) {
+    if (exUsername && exUsername.id !== req.user.id) {
       return res.status(403).send('이미 사용중인 사용자 이름 입니다.');
     }
 
