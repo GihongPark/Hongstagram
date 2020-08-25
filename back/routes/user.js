@@ -184,6 +184,15 @@ router.get('/:username/search', isLoggedIn, async (req, res, next) => {  // GET 
 // 프로필 변경
 router.patch('/edit', isLoggedIn, async (req, res, next) => {  // PATCH /user/edit
   try {
+    const exUsername = await User.findOne({
+      where: {
+        username: req.body.username,
+      }
+    });
+    if (exUsername) {
+      return res.status(403).send('이미 사용중인 사용자 이름 입니다.');
+    }
+    
     const values = {};
     if (req.body.username) {
       values.username = req.body.username;
