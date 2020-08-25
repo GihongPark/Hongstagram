@@ -7,7 +7,7 @@ import Router from 'next/router';
 import { END } from 'redux-saga';
 import axios from 'axios';
 
-import { LOG_IN_REQUEST, LOAD_MY_INFO_REQUEST } from '../reducers/user';
+import { LOG_IN_REQUEST, LOAD_MY_INFO_REQUEST, GUEST_LOG_IN_REQUEST } from '../reducers/user';
 import useInput from '../hooks/useInput';
 import AppLayout from '../components/AppLayout';
 import { Layout, Box, Logo, FormWrapper, InputWrapper, ButtonWrapper, Terms, OtherPath } from '../style/sign';
@@ -37,6 +37,12 @@ const Signup = () => {
       alert(logInError);
     }
   }, [logInError]);
+
+  const onGuestLogin = useCallback(() => {
+    dispatch({
+      type: GUEST_LOG_IN_REQUEST,
+    });
+  });
 
   const onSubmit = useCallback((e) => (
     dispatch({
@@ -70,6 +76,7 @@ const Signup = () => {
               </InputWrapper>
               <ButtonWrapper>
                 <Button type="primary" htmlType="submit" loading={logInLoading}>로그인</Button>
+                <Button style={{ marginTop: '8px' }} htmlType="submit" loading={logInLoading} onClick={onGuestLogin}>게스트 아이디로 로그인</Button>
               </ButtonWrapper>
               <Terms />
             </FormWrapper>

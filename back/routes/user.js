@@ -192,7 +192,7 @@ router.patch('/edit', isLoggedIn, async (req, res, next) => {  // PATCH /user/ed
     if (exUsername) {
       return res.status(403).send('이미 사용중인 사용자 이름 입니다.');
     }
-    
+
     const values = {};
     if (req.body.username) {
       values.username = req.body.username;
@@ -358,6 +358,32 @@ router.post('/signup', isNotLoggedIn, async (req, res, next) => {  // POST  /use
     console.error(error);
     next(error);
   }
+});
+
+// 게스트 로그인
+router.post('/guestLogin', isNotLoggedIn, async (req, res, next) => {  // POST  /user/guestLogin
+  req.email = 'guest@email.com';
+  req.password = process.env.GUEST_PASSWORD;
+  passport.authenticate('local', (err, user, info) => {
+    if (err) {
+      console.error(err);
+      return next(err);
+    }
+    if (info) {
+      return res.status(401).send(info.reason);
+    }
+    return req.login(user, async (loginErr) => {
+      if (loginErr) {
+        console.error(loginErr);
+        return next(loginErr);
+      }
+      const LoginUserInfo = await User.findOne({
+        where: { id: user.id },
+        attributes: ['id', 'username', 'src'],
+      });
+      return res.status(200).json(LoginUserInfo);
+    });
+  })(req, res, next);
 });
 
 // 로그인

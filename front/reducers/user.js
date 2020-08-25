@@ -51,6 +51,10 @@ export const LOAD_USER_LIST_REQUEST = 'LOAD_USER_LIST_REQUEST';
 export const LOAD_USER_LIST_SUCCESS = 'LOAD_USER_LIST_SUCCESS';
 export const LOAD_USER_LIST_FAILURE = 'LOAD_USER_LIST_FAILURE';
 
+export const GUEST_LOG_IN_REQUEST = 'GUEST_LOG_IN_REQUEST';
+export const GUEST_LOG_IN_SUCCESS = 'GUEST_LOG_IN_SUCCESS';
+export const GUEST_LOG_IN_FAILURE = 'GUEST_LOG_IN_FAILURE';
+
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
 export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
 export const LOG_IN_FAILURE = 'LOG_IN_FAILURE';
@@ -143,16 +147,19 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.loadUserListDone = false;
       draft.userList = [];
       break;
+    case GUEST_LOG_IN_REQUEST:
     case LOG_IN_REQUEST:
       draft.logInLoading = true;
       draft.logInError = null;
       draft.logInDone = false;
       break;
+    case GUEST_LOG_IN_SUCCESS:
     case LOG_IN_SUCCESS:
       draft.logInLoading = false;
       draft.me = action.data;
       draft.logInDone = true;
       break;
+    case GUEST_LOG_IN_FAILURE:
     case LOG_IN_FAILURE:
       draft.logInLoading = false;
       draft.logInError = action.error;

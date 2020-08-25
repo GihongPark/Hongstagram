@@ -11,6 +11,9 @@ import {
   LOAD_USER_LIST_REQUEST,
   LOAD_USER_LIST_SUCCESS,
   LOAD_USER_LIST_FAILURE,
+  GUEST_LOG_IN_FAILURE,
+  GUEST_LOG_IN_REQUEST,
+  GUEST_LOG_IN_SUCCESS,
   LOG_IN_FAILURE,
   LOG_IN_REQUEST,
   LOG_IN_SUCCESS,
@@ -108,12 +111,30 @@ function* loadUserList(action) {
   }
 }
 
+function guestLogInAPI() {
+  return axios.post('/user/guestLogin');
+}
+function* guestLogIn() {
+  try {
+    const result = yield call(guestLogInAPI);
+    yield put({
+      type: GUEST_LOG_IN_SUCCESS,
+      data: result.data,
+    });
+  } catch (err) {
+    console.error(err);
+    yield put({
+      type: GUEST_LOG_IN_FAILURE,
+      error: err.response.data,
+    });
+  }
+}
+
 function logInAPI(data) {
   return axios.post('/user/login', data);
 }
 function* logIn(action) {
   try {
-    console.log('saga logIn');
     const result = yield call(logInAPI, action.data);
     yield put({
       type: LOG_IN_SUCCESS,
@@ -298,6 +319,10 @@ function* watchLoadUserList() {
   yield takeLatest(LOAD_USER_LIST_REQUEST, loadUserList);
 }
 
+function* watchGuestLogIn() {
+  yield takeLatest(GUEST_LOG_IN_REQUEST, guestLogIn);
+}
+
 function* watchLogIn() {
   yield takeLatest(LOG_IN_REQUEST, logIn);
 }
@@ -339,6 +364,7 @@ export default function* userSaga() {
     fork(watchLoadMyInfo),
     fork(watchLoadUser),
     fork(watchLoadUserList),
+    fork(watchGuestLogIn),
     fork(watchLogIn),
     fork(watchLogOut),
     fork(watchSignUp),
