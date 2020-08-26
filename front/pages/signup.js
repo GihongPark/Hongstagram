@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState, useRef } from 'react';
 import { Input, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import Head from 'next/head';
@@ -21,6 +21,7 @@ const Signup = () => {
   const [password, onChangePassword] = useInput('');
   const [username, onChangeUsername] = useInput('');
   const [name, onChangeName] = useInput('');
+  const usernameInput = useRef();
 
   useEffect(() => {
     if (me && me.id) {
@@ -40,8 +41,13 @@ const Signup = () => {
     }
   }, [signUpError]);
 
-  const onSubmit = useCallback((e) => (
-    dispatch({
+  const onSubmit = useCallback((e) => {
+    if (username.match(/[^a-zA-z0-9_.]/g)) {
+      alert('사용자 이름은 영문, 숫자, 밑줄 및 마침표만 사용 할 수 있습니다.');
+      return usernameInput.current.focus();
+    }
+
+    return dispatch({
       type: SIGN_UP_REQUEST,
       data: {
         email,
@@ -49,8 +55,8 @@ const Signup = () => {
         username,
         name,
       },
-    })
-  ), [email, password, username, name]);
+    });
+  }, [email, password, username, name]);
 
   return (
     <>

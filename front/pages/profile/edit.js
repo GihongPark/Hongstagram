@@ -29,7 +29,9 @@ const ProfileEdit = () => {
   const [password, onChangePassword] = useInput('');
   const [passwordCheck, setPasswordCheck] = useState('');
   const [passwordError, setPasswordError] = useState(false);
+  const [usernameError, setUsernameError] = useState(false);
   const imageInput = useRef();
+  const usernameInput = useRef();
 
   useEffect(() => {
     if (!me || !me.id) {
@@ -80,6 +82,11 @@ const ProfileEdit = () => {
   });
 
   const onSubmit = useCallback(() => {
+    if (username.match(/[^a-zA-z0-9_.]/g)) {
+      usernameInput.current.focus();
+      return setUsernameError(true);
+    }
+
     dispatch({
       type: UPDATE_PROFILE_REQUEST,
       data: {
@@ -87,6 +94,7 @@ const ProfileEdit = () => {
         username,
       },
     });
+    return setUsernameError(false);
   });
   const onClickPassword = useCallback(() => {
     if (password !== passwordCheck) {
@@ -154,7 +162,8 @@ const ProfileEdit = () => {
               <label htmlFor="user-username">
                 사용자 이름
               </label>
-              <Input name="user-username" value={username} onChange={onChangeUsername} placeholder="사용자 이름" />
+              <Input name="user-username" value={username} onChange={onChangeUsername} ref={usernameInput} placeholder="사용자 이름" />
+              {usernameError && <div style={{ color: 'red' }}>영문, 숫자, 밑줄 및 마침표만 사용 할 수 있습니다.</div>}
             </InputWrapper>
             <CollapseWrapper>
               <Collapse>
