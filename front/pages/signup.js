@@ -80,7 +80,7 @@ const Signup = () => {
               </InputWrapper>
               <InputWrapper>
                 <label htmlFor="user-username">
-                  <Input name="user-username" value={username} onChange={onChangeUsername} placeholder="사용자 이름" required />
+                  <Input name="user-username" value={username} onChange={onChangeUsername} ref={usernameInput} placeholder="사용자 이름" required />
                 </label>
               </InputWrapper>
               <InputWrapper>

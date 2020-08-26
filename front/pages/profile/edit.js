@@ -83,18 +83,16 @@ const ProfileEdit = () => {
 
   const onSubmit = useCallback(() => {
     if (username.match(/[^a-zA-z0-9_.]/g)) {
-      usernameInput.current.focus();
-      return setUsernameError(true);
+      return alert('사용자 이름은 영문, 숫자, 밑줄 및 마침표만 사용 할 수 있습니다.');
     }
 
-    dispatch({
+    return dispatch({
       type: UPDATE_PROFILE_REQUEST,
       data: {
         name,
         username,
       },
     });
-    return setUsernameError(false);
   });
   const onClickPassword = useCallback(() => {
     if (password !== passwordCheck) {
