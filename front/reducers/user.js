@@ -232,7 +232,7 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
       draft.removeProfileImageError = null;
       break;
     case UPLOAD_PROFILE_IMAGE_SUCCESS: {
-      draft.me.src = action.data;
+      draft.me.src = action.data.replace(/\/thumb\//, '/original/');
       if (draft.userInfo) {
         draft.userInfo.src = action.data.replace(/\/thumb\//, '/original/');
       }
