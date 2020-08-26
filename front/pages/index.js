@@ -28,6 +28,12 @@ const Home = () => {
   }, [me, me?.id]);
 
   useEffect(() => {
+    dispatch({
+      type: LOAD_POSTS_REQUEST,
+    });
+  }, []);
+
+  useEffect(() => {
     function onScroll() {
       if (
         window.scrollY + document.documentElement.clientHeight
@@ -48,6 +54,9 @@ const Home = () => {
     };
   }, [mainPosts, hasMorePosts, loadPostsLoading]);
 
+  if (!me || !me.id) {
+    return null;
+  }
   return (
     <AppLayout>
       <div style={style}>
@@ -75,9 +84,6 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
   }
   context.store.dispatch({
     type: LOAD_MY_INFO_REQUEST,
-  });
-  context.store.dispatch({
-    type: LOAD_POSTS_REQUEST,
   });
 
   context.store.dispatch(END);
