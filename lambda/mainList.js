@@ -9,7 +9,7 @@ exports.handler = async (event, context, callback) => {
   console.log(Bucket, Key);
   const filename = Key.split('/')[Key.split('/').length - 1];
   const ext = Key.split('.')[Key.split('.').length - 1];
-  const requiredFormat = ext === 'jpg' ? 'jpeg' : ext;
+  const requiredFormat = ext.toLowerCase() === 'jpg' ? 'jpeg' : ext;
   console.log('filename', filename, 'ext', ext);
 
 
