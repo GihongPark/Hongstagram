@@ -115,6 +115,9 @@ const Profile = () => {
     setType(key);
   }, [type]);
 
+  if (!me || !me.id) {
+    return null;
+  }
   return (
     <>
       <Head>

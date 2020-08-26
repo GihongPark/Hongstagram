@@ -21,6 +21,9 @@ const Explore = () => {
     }
   }, [me, me?.id]);
 
+  if (!me || !me.id) {
+    return null;
+  }
   return (
     <AppLayout>
       <FlexColumn>

@@ -107,6 +107,9 @@ const ProfileEdit = () => {
     });
   });
 
+  if (!me || !me.id) {
+    return null;
+  }
   return (
     <>
       <Head>
