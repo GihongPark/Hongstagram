@@ -63,10 +63,10 @@ const Home = () => {
         {mainPosts.map((post) => (
           <PostDetail key={post.id} post={post} mode="list" />
         ))}
-        {mainPosts.length === 0 && (
+        {!loadPostsLoading && mainPosts.length === 0 && (
           <Empty style={{ marginTop: '100px' }} description="게시물을 올려주세요" />
         )}
-        {hasMorePosts && (
+        {loadPostsLoading && (
           <Loading>
             <LoadingOutlined />
           </Loading>

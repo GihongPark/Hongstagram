@@ -44,7 +44,7 @@ const PostList = ({ type, paramData }) => {
     function onScroll() {
       if (
         window.scrollY + document.documentElement.clientHeight
-        > document.documentElement.scrollHeight - 300
+        > document.documentElement.scrollHeight - 600
       ) {
         if (hasMorePosts && !loadPostsLoading) {
           const lastId = mainPosts[mainPosts.length - 1]?.id;
@@ -97,7 +97,7 @@ const PostList = ({ type, paramData }) => {
                 <PostCard post={post} showPost={showPost} />
               </Col>
             ))
-            : <Col xs={24}><Empty /></Col>
+            : <Col xs={24}>{!loadPostsLoading && <Empty />}</Col>
         }
         <Modal
           visible={visible}
@@ -110,7 +110,7 @@ const PostList = ({ type, paramData }) => {
           {loadPostDone && (<PostDetail post={singlePost} mode="post" />)}
         </Modal>
       </Row>
-      {hasMorePosts && (
+      {loadPostsLoading && (
         <Loading>
           <LoadingOutlined />
         </Loading>
