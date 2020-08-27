@@ -199,8 +199,10 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case FOLLOW_SUCCESS:
       draft.followLoading = false;
       draft.me.Follows += 1;
-      draft.userInfo.isFollow = true;
-      draft.userInfo.Followers += 1;
+      if (draft.userInfo) {
+        draft.userInfo.isFollow = true;
+        draft.userInfo.Followers += 1;
+      }
       draft.followDone = true;
       break;
     case FOLLOW_FAILURE:
@@ -215,8 +217,10 @@ const reducer = (state = initialState, action) => produce(state, (draft) => {
     case UNFOLLOW_SUCCESS:
       draft.unfollowLoading = false;
       draft.me.Follows -= 1;
-      draft.userInfo.isFollow = false;
-      draft.userInfo.Followers -= 1;
+      if (draft.userInfo) {
+        draft.userInfo.isFollow = false;
+        draft.userInfo.Followers -= 1;
+      }
       draft.unfollowDone = true;
       break;
     case UNFOLLOW_FAILURE:
